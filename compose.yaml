@@ -1,5 +1,15 @@
 
+name: symfony-cms
 services:
+  php-apache:
+    build: ./.docker/php-apache
+    ports:
+      - "80"
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - app
+
 ###> doctrine/doctrine-bundle ###
   database:
     image: postgres:${POSTGRES_VERSION:-16}-alpine
@@ -12,9 +22,14 @@ services:
       - database_data:/var/lib/postgresql/data:rw
       # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
       # - ./docker/db/data:/var/lib/postgresql/data:rw
+    networks:
+    - app
 ###< doctrine/doctrine-bundle ###
 
 volumes:
 ###> doctrine/doctrine-bundle ###
   database_data:
 ###< doctrine/doctrine-bundle ###
+
+networks:
+  app:

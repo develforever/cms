@@ -1,9 +1,17 @@
 
 services:
+
+  php-apache:
+    volumes:
+      - ./.docker/php-apache/000-default.conf:/etc/apache2/sites-available/000-default.conf
+      - ./.docker/php-apache/apache2.conf:/etc/apache2/apache2.conf
+      - ./.docker/php-apache/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+    ports:
+      - "9080:80"
 ###> doctrine/doctrine-bundle ###
   database:
     ports:
-      - "5432"
+      - "5432:5432"
 ###< doctrine/doctrine-bundle ###
 
 ###> symfony/mailer ###
