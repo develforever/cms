@@ -1,0 +1,52 @@
+{# templates/bundles/NelmioApiDocBundle/SwaggerUi/index.html.twig #}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ swagger_data.info.title|default('API Documentation') }}</title>
+    <link rel="stylesheet" href="{{ asset('bundles/nelmioapidoc/swagger-ui/swagger-ui.css') }}">
+    <link rel="icon" type="image/png" href="{{ asset('bundles/nelmioapidoc/swagger-ui/favicon-32x32.png') }}" sizes="32x32" />
+    <link rel="icon" type="image/png" href="{{ asset('bundles/nelmioapidoc/swagger-ui/favicon-16x16.png') }}" sizes="16x16" />
+    <style>
+        html { box-sizing: border-box; overflow: -moz-scrollbars-vertical; overflow-y: scroll; }
+        *, *:before, *:after { box-sizing: inherit; }
+        body { margin:0; background: #fafafa; }
+    </style>
+</head>
+
+<body>
+    <div id="swagger-ui"></div>
+
+    <script src="{{ asset('bundles/nelmioapidoc/swagger-ui/swagger-ui-bundle.js') }}"></script>
+    <script src="{{ asset('bundles/nelmioapidoc/swagger-ui/swagger-ui-standalone-preset.js') }}"></script>
+    
+    {# Dodajemy niestandardowy plik JS #}
+    <script src="{{ asset('js/swagger-custom.js') }}"></script>
+
+    <script>
+        window.onload = function () {
+    // Czekamy, aż Swagger UI zostanie w pełni załadowany
+    const ui = SwaggerUIBundle({
+        spec: {{ swagger_data.spec|json_encode|raw }},
+        dom_id: '#swagger-ui',
+        presets: [
+            SwaggerUIBundle.presets.apis,
+            SwaggerUIStandalonePreset
+        ],
+        layout: "StandaloneLayout",
+        onComplete: () => {
+            // Dodajemy niestandardowe pole do UI
+            const infoSection = document.querySelector('.info');
+            const customField = document.createElement('div');
+            
+            customField.innerHTML = `<strong>Commit Hash:</strong> ${ui.specSelectors.info().get('x-commit-hash') || 'Not available'}`;
+            infoSection.appendChild(customField);
+        }
+    });
+
+};
+    </script>
+</body>
+</html>
