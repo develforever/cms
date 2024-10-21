@@ -12,7 +12,7 @@ class IndexConrtollerController extends AbstractController
     public function index(): Response
     {
         return $this->render('index_conrtoller/index.html.twig', [
-            'controller_name' => 'IndexConrtollerController',
+            'controller_name' => self::class,
         ]);
     }
 }
