@@ -1,0 +1,53 @@
+html,
+body {
+    --bs-body-color: #d9d9d9;
+    --bs-dark-bg-subtle: #393939;
+    --bs-link-color-rgb: #0d6efd42;
+}
+
+.card {
+    --bs-card-bg: #ebebeb3d
+}
+.card-body {
+    --bs-card-color: #ebebeb
+}
+
+.dropdown-menu {
+    --bs-dropdown-bg: #3e3e3e;
+}
+
+.breadcrumb {
+    --bs-breadcrumb-item-active-color: #ebebeb;
+    --bs-breadcrumb-divider: '';
+    --bs-breadcrumb-margin-bottom: 0;
+}
+
+@keyframes example {
+    from {
+        width: 0px;
+    }
+
+    33% {
+        width: 4px;
+    }
+
+    66% {
+        width: 8px;
+    }
+
+    to {
+        width: 11px;
+    }
+}
+
+.dot-loader .dot-loader--dots:after {
+    display: inline-block;
+    content: '...';
+    overflow: hidden;
+    text-wrap: nowrap;
+    animation-name: example;
+    animation-duration: 2900ms;
+    animation-iteration-count: infinite;
+    vertical-align: text-bottom;
+
+}
