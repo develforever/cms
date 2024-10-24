@@ -24,11 +24,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string')]
     private $password;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(nullable: true, type: 'text')]
     private ?string $private_crt = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(nullable: true, type: 'text')]
     private ?string $public_crt = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $passphrase = null;
 
     public function getEmail(): ?string
     {
@@ -59,9 +62,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return ['ROLE_USER'];
     }
 
-    public function eraseCredentials()
-    {
-    }
+    public function eraseCredentials() {}
 
     public function getUserIdentifier(): string
     {
@@ -88,6 +89,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPublicCrt(string $public_crt): static
     {
         $this->public_crt = $public_crt;
+
+        return $this;
+    }
+
+    public function getPassphrase(): ?string
+    {
+        return $this->passphrase;
+    }
+
+    public function setPassphrase(?string $passphrase): static
+    {
+        $this->passphrase = $passphrase;
 
         return $this;
     }
