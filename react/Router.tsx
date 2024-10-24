@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { createBrowserRouter, Outlet, RouteObject } from "react-router-dom";
 import ErrorPage from "@app/Pages/ErrorPage";
-import Redirect from "@app/Component/Redirect";
+import Index from "@app/Pages/Index";
 
 function routes(panelsRoutes?: RouteObject[]): RouteObject[] {
 
@@ -18,7 +18,11 @@ function routes(panelsRoutes?: RouteObject[]): RouteObject[] {
             children: [
                 {
                     path: "/",
-                    element: <Redirect to="/"></Redirect>
+                    element: <Index></Index>,
+                    action: async ({ params, request }) => {
+                        let formData = await request.formData();
+                        return formData;
+                    },
                 },
                 {
                     id: "panel",

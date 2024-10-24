@@ -7,6 +7,7 @@ import { Subject } from "rxjs";
 import * as Home from "@app/Pages/Home";
 import * as Page from "@app/Pages/Page";
 import * as Account from "@app/Pages/Account";
+import * as Index from "@app/Pages/Index";
 
 let panelsRoutes = [
     ...Home.getRoutes(),

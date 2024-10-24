@@ -6,6 +6,7 @@ export const ApiTokenName = 'panel:api';
 export enum ApiEndpointNames {
     PAGE_STORE = "/api/page/store",
     PAGE_LIST = "/api/page/list",
+    USER_LOGIN = "/api/login",
 };
 
 export interface ApiResource extends ResponseDataInterface {
@@ -25,16 +26,7 @@ export interface ApiPageResource extends ApiResource {
 }
 
 export interface ApiUserResource extends ApiResource {
-    data: {
-        id: number;
-        name: string;
-        role: string;
-        email: string;
-        email_verified_at: string;
-        created_at: string;
-        updated_at: string;
-        deleted_at: string;
-    },
+    email: string;
 }
 
 export type ApiResponsePageList = {
@@ -58,7 +50,7 @@ export type ApiResponsePageList = {
     }
 };
 
-export type ApiResponseUser = {
+export interface ApiResponseUser extends ResponseDataInterface {
     data: ApiUserResource,
     links: {
         [key: string]: string
@@ -68,6 +60,6 @@ export type ApiResponseUser = {
     }
 };
 
-export type ApiResponseToken = {
+export interface ApiResponseToken extends ApiResource {
     token: string
 };

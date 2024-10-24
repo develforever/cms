@@ -9,15 +9,11 @@ function App() {
 
     console.log('render app');
     useService();
-    
+
     const context = useContext(AppContext);
     const router = context.router;
-    const auth = useUserAuth();
-
-
     return <div className="app w-100 h-100 q">
-        {/* {JSON.stringify(user.current)} */}
-        {context.isAuthenticated() ? <RouterProvider router={router} /> : <div className="dot-loader">Loading <span className="dot-loader--dots"></span></div>}
+        <RouterProvider router={router}></RouterProvider>
     </div>
 
 }

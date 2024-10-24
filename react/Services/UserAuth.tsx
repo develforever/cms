@@ -3,7 +3,7 @@ import { ApiResponseToken, ApiResponseUser, ApiTokenName } from "@app/Enum/Api";
 import { RouteNames } from "@app/Enum/Route";
 import useRedirect from "@app/hooks/useRedirect";
 import useDataService, { Status } from "@app/Services/DataService";
-import { useContext, useEffect, useRef } from "react";
+import { useCallback, useContext, useEffect, useRef } from "react";
 
 
 function useUserAuth() {
@@ -11,70 +11,31 @@ function useUserAuth() {
     console.debug('user:auth');
 
     const context = useContext(AppContext);
-    const [stateToken, dispatchTokenCreate] = useDataService<ApiResponseToken>('/user/token/create');
+    const [stateToken, dispatchTokenCreate] = useDataService<ApiResponseToken>('/api/login');
     const [stateUser, dispatchUser] = useDataService<ApiResponseUser>('/api/user');
-    const redirect = useRedirect(RouteNames.HOME);
 
-    useEffect(() => {
-        console.debug('user:auth:dispatch1');
-        if (!context.token) {
-            dispatchTokenCreate({ baseURL: '', data: { token_name: ApiTokenName } })
-        }
+    let tokenCallback = useCallback(async (email: string, password: string) => {
+        dispatchTokenCreate({ data: { email, password } });
+    }, []);
+
+    let userCallback = useCallback(async () => {
+        dispatchUser({});
     }, []);
 
     useEffect(() => {
-
-        console.debug('user:auth:ue:token', stateToken.status);
-
-        if (stateToken.status === Status.success) {
-            context.dispatch({ token: stateToken.result?.data.token });
-        }
-        else if (stateToken.status === Status.error) {
-            if (stateToken.result?.response?.status === 401) {
-                redirect();
-            }
-
-
-            // context.plugin.ModalsPlugin.next({
-            //     event: ModalsPluginEvent.ADD,
-            //     data: {
-            //         title: "Modal my title",
-            //         onClose: () => {
-            //             console.log("modal close listener");
-            //         },
-            //         onOk: () => {
-            //             console.log("modal ok listener");
-            //         },
-            //         onCancel: () => {
-            //             console.log("modal cancel listener");
-            //         }
-            //     } as ModalProps
-            // } as ModalPluginEvent);
-        }
-    }, [stateToken.status]);
-
-    useEffect(() => {
-
         if (stateUser.status === Status.success) {
-
-            let user = stateUser.result?.data.data;
-            if (user) {
+            let user = stateUser.result?.data;
+            if (user?.data.email) {
                 // @ts-ignore
-                user.username = stateUser.result?.data?.data?.email;
+                user.username = user?.data.email;
             }
             let links = stateUser.result?.data.links;
+
             context.dispatch({ user, links });
         }
-
     }, [stateUser.status]);
 
-    useEffect(() => {
-        if (context.token && !context.isAuthenticated()) {
-            dispatchUser({});
-        }
-    }, [
-        context.token
-    ]);
+    return [tokenCallback, userCallback] as const;
 
 }
 

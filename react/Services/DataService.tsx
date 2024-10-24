@@ -52,17 +52,23 @@ let apiClient: AxiosInstance | null = null;
 
 export function useService() {
 
+    let csrftoken = globalThis.document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
     const context = useContext(AppContext);
+    let headers: { [key: string]: string } = {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+    };
+    if (context.token) {
+        headers['Authorization'] = `Bearer ${context.token}`;
+    }
+    if (csrftoken) {
+        headers['X-CSRF-TOKEN'] = `${csrftoken}`;
+    }
 
     apiClient = axios.create({
         baseURL: '/',
-        timeout: 1000,
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'Authorization': `Bearer ${context.token}`,
-            'X-CSRF-TOKEN': globalThis.document.querySelector('meta[name="csrf-token"]')?.getAttribute('content'),
-        }
+        timeout: 5000,
+        headers,
     });
 };
 

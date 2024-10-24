@@ -9,7 +9,16 @@ const Center: React.FC<LayoutSlotProps> = ({ }) => {
 
     return <>
         <Card>
-            <Form url={ApiEndpointNames.PAGE_STORE} redirectUrl={RouteNames.PANEL_PAGES}></Form>
+            <Form url={ApiEndpointNames.PAGE_STORE} redirectUrl={RouteNames.PANEL_PAGES}>
+                <div>
+                    <label className="form-label">Title</label>
+                    <input name="title" className="form-control" type="text" />
+                </div>
+                <div>
+                    <label className="form-label">Content</label>
+                    <textarea name="content" className="form-control" ></textarea>
+                </div>
+            </Form>
         </Card>
     </>
 
