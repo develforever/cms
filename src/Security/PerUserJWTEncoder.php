@@ -3,6 +3,7 @@
 namespace App\Security;
 
 use App\Entity\User;
+use App\Service\HashService;
 use Doctrine\ORM\EntityManagerInterface;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
@@ -14,7 +15,11 @@ use Symfony\Component\DependencyInjection\Container;
 class PerUserJWTEncoder implements JWTEncoderInterface
 {
 
-    public function __construct(private Container $container, private EntityManagerInterface $entityManager) {}
+    public function __construct(
+        private Container $container, 
+        private EntityManagerInterface $entityManager,
+        private HashService $hashService,
+        ) {}
 
     /**
      * {@inheritdoc}
@@ -25,8 +30,8 @@ class PerUserJWTEncoder implements JWTEncoderInterface
 
             $user = $this->entityManager->getRepository(User::class)->findOneBy(['email'=> $data['username']]);
             $privateKey = openssl_pkey_get_private(
-                $user->getPrivateCrt(),
-                $user->getPassphrase()
+                $this->hashService->aesDecrypt($user->getPrivateCrt()),
+                $this->hashService->aesDecrypt($user->getPassphrase())
             );
             return JWT::encode($data, $privateKey, 'RS256');
         } catch (\Exception $e) {
@@ -48,7 +53,7 @@ class PerUserJWTEncoder implements JWTEncoderInterface
 
             $user = $this->entityManager->getRepository(User::class)->findOneBy(['email'=> $data['username']]);
             
-            $publicKey = $user->getPublicCrt();
+            $publicKey = $this->hashService->aesDecrypt($user->getPublicCrt());
             $key = new Key($publicKey, $headerData['alg']);
             $decoded = (array) JWT::decode($token, $key);
 
