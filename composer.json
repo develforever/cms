@@ -1,6 +1,15 @@
 {
+    "authors": [
+        {
+            "email": "rockfade@gmail.com",
+            "name": "Robert Jamróz",
+            "role": "Owner"
+        }
+    ],
+    "name": "robert-jamroz/symfony-cms",
+    "version": "0.0.1",
     "type": "project",
-    "license": "proprietary",
+    "license": "MIT",
     "minimum-stability": "stable",
     "prefer-stable": true,
     "require": {
