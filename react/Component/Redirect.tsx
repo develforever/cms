@@ -1,14 +1,11 @@
+import React, { useEffect } from 'react';
 
-import React, { useEffect } from "react";
+const Redirect: React.FC<{ to: string }> = ({ to }) => {
+  useEffect(() => {
+    globalThis.location.assign(to);
+  }, [to]);
 
-
-const Redirect: React.FC<{to:string}> = ({ to }) => {
-
-    useEffect(()=>{
-        globalThis.location.assign(to);
-    }, []);
-
-    return <></>
-}
+  return <></>;
+};
 
 export default Redirect;

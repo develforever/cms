@@ -1,8 +1,7 @@
-import React from "react";
+import React from 'react';
 
 function DefaultBottom() {
-
-    return <div>Bottom default comp</div>
+  return <div>Bottom default comp</div>;
 }
 
 export default DefaultBottom;

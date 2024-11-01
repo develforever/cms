@@ -9,7 +9,7 @@ import prettierConfig from 'eslint-config-prettier';
 export default [
   {
     // Ustawienia parsowania i języka
-    files: ['react/**/*.ts', 'react/**/*.tsx'],
+    files: ['react/**/*.tsx'],
     languageOptions: {
       parser: typescriptParser,
       parserOptions: {

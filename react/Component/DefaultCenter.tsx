@@ -1,8 +1,7 @@
-import React from "react";
+import React from 'react';
 
 function DefaultCenter() {
-
-    return <div>Center default comp</div>
+  return <div>Center default comp</div>;
 }
 
 export default DefaultCenter;

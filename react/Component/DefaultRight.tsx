@@ -1,8 +1,7 @@
-import React from "react";
+import React from 'react';
 
 function DefaultRight() {
-
-    return <div>Right default comp</div>
+  return <div>Right default comp</div>;
 }
 
 export default DefaultRight;

@@ -1,35 +1,50 @@
-import AppContext from "@app/AppContext";
-import { ApiResponseToken, ApiResponseUser, ApiTokenName } from "@app/Enum/Api";
-import useDataService, { Status } from "@app/Services/DataService";
-import { useCallback, useContext, useEffect, useMemo, useRef } from "react";
+import { useCallback } from 'react';
 
+interface StorageItem {
+  expire: number;
+  created: number;
+  value: string | number | object | null;
+}
 
 function useLocalStorage() {
+  const storage = globalThis.localStorage;
 
+  const get = useCallback(
+    (key: string) => {
+      console.debug(`get: ${key}`);
 
-    const storage = globalThis.localStorage;
+      let item = JSON.parse(`${storage.getItem(key)}`) as StorageItem;
 
-    const get = useCallback((key: string, ...args: any) => {
-        console.debug(`get: ${key}`);
-        return storage.getItem(key)
+      let value = item?.value;
 
-    }, []);
+      return value;
+    },
+    []
+  );
 
-    const set = useCallback((key: string, value: any, ...args: any) => {
-        console.debug(`set: ${key} => ${value}`);
-        if (get(key) !== value) {
-            console.debug('set run');
-            storage.setItem(key, value);
-        }
-    }, []);
+  const set = useCallback(
+    (key: string, value: string | number | object | null) => {
+      let data = JSON.stringify({
+        created: Date.now(),
+        expire: Date.now() + 1000 * 3600,
+        value,
+      });
+      console.debug(`set: ${key} => ${value}`);
+      console.debug('set run');
+      storage.setItem(key, data);
+    },
+    []
+  );
 
-    const del = useCallback((key: string, ...args: any) => {
-        console.debug(`delete: ${key}`);
-        storage.removeItem(key);
-    }, []);
+  const del = useCallback(
+    (key: string) => {
+      console.debug(`delete: ${key}`);
+      storage.removeItem(key);
+    },
+    []
+  );
 
-    return [get, set, del] as const;
-
+  return [get, set, del] as const;
 }
 
 export default useLocalStorage;

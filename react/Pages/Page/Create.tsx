@@ -1,16 +1,15 @@
-import AppContext from "@app/AppContext";
-import Center from "@app/Component/Pages/Page/Create/Center";
-import Layout, { SlotNames } from "@app/Layout";
-import React, { useContext, useEffect, useMemo } from "react";
-import { useActionData } from "react-router";
+import Center from '@app/Component/Pages/Page/Create/Center';
+import Layout, { SlotNames } from '@app/Layout';
+import React from 'react';
 
 function Create() {
-    
-    return <>
-        <Layout>
-            <Center data-slot={SlotNames.Center} ></Center>
-        </Layout>
+  return (
+    <>
+      <Layout>
+        <Center data-slot={SlotNames.Center}></Center>
+      </Layout>
     </>
+  );
 }
 
 export default Create;

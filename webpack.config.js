@@ -1,8 +1,6 @@
 
 const path = require("path");
 const webpack = require('webpack');
-const ESLintPlugin = require('eslint-webpack-plugin');
-
 
 module.exports = {
     devtool: 'source-map',
@@ -17,10 +15,6 @@ module.exports = {
     plugins: [
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
-        }),
-        new ESLintPlugin({
-            extensions: ['js', 'jsx'],
-            fix: true, // Automatyczne poprawianie błędów ESLint
         }),
     ],
     mode: process.env.NODE_ENV || 'development',
