@@ -24,10 +24,10 @@ function useUserAuth() {
 
     useEffect(() => {
         if (stateUser.status === Status.success) {
-            let user = stateUser.result?.data;
-            if (user?.data.email) {
+            let user = stateUser.result?.data.data;
+            if (user?.email) {
                 // @ts-ignore
-                user.username = user?.data.email;
+                user.username = user?.email;
             }
             let links = stateUser.result?.data.links;
 

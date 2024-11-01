@@ -6064,7 +6064,7 @@ var Table = function Table(_ref) {
     if (state.status === _app_Services_DataService__WEBPACK_IMPORTED_MODULE_0__.Status.success) {
       var _state$result2;
       // @ts-ignore
-      var last = (_state$result2 = state.result) === null || _state$result2 === void 0 || (_state$result2 = _state$result2.data) === null || _state$result2 === void 0 || (_state$result2 = _state$result2.meta) === null || _state$result2 === void 0 ? void 0 : _state$result2.last_page;
+      var last = (_state$result2 = state.result) === null || _state$result2 === void 0 || (_state$result2 = _state$result2.data) === null || _state$result2 === void 0 || (_state$result2 = _state$result2.meta) === null || _state$result2 === void 0 ? void 0 : _state$result2.total;
       lastPage.current = last;
     }
   }, [state]);
@@ -7327,10 +7327,10 @@ function useUserAuth() {
   (0,react__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
     if (stateUser.status === _app_Services_DataService__WEBPACK_IMPORTED_MODULE_1__.Status.success) {
       var _stateUser$result, _stateUser$result2;
-      var user = (_stateUser$result = stateUser.result) === null || _stateUser$result === void 0 ? void 0 : _stateUser$result.data;
-      if (user !== null && user !== void 0 && user.data.email) {
+      var user = (_stateUser$result = stateUser.result) === null || _stateUser$result === void 0 ? void 0 : _stateUser$result.data.data;
+      if (user !== null && user !== void 0 && user.email) {
         // @ts-ignore
-        user.username = user === null || user === void 0 ? void 0 : user.data.email;
+        user.username = user === null || user === void 0 ? void 0 : user.email;
       }
       var links = (_stateUser$result2 = stateUser.result) === null || _stateUser$result2 === void 0 ? void 0 : _stateUser$result2.data.links;
       context.dispatch({

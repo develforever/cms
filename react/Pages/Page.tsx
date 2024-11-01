@@ -5,10 +5,7 @@ import Edit from "@app/Pages/Page/Edit";
 import Create from "@app/Pages/Page/Create";
 import Details from "@app/Pages/Page/Details";
 import { RouteObject } from "react-router";
-import useDataService from "@app/Services/DataService";
-import useAppStateInit from "@app/AppState";
 import AppContext from "@app/AppContext";
-import { ApiEndpointNames } from "@app/Enum/Api";
 
 
 export function getRoutes(): RouteObject[] {

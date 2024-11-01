@@ -4,7 +4,9 @@ import { ResponseDataInterface } from "@app/Services/DataService";
 export const ApiTokenName = 'panel:api';
 
 export enum ApiEndpointNames {
+    /** @deprecated use link from api meta returned from page list */
     PAGE_STORE = "/api/page/store",
+    /** @deprecated */
     PAGE_LIST = "/api/page/list",
     USER_LOGIN = "/api/login",
 };
@@ -40,12 +42,7 @@ export type ApiResponsePageList = {
     },
     meta: {
         current_page: number,
-        from: number,
-        last_page: number,
-        links: any[],
-        path: string,
         per_page: number,
-        to: number,
         total: number
     }
 };

@@ -61,7 +61,7 @@ const Table = <D extends ResponseDataInterface, R extends ResponseDataInterface,
     useEffect(() => {
         if (state.status === Status.success) {
             // @ts-ignore
-            let last: number = state.result?.data?.meta?.last_page as number;
+            let last: number = state.result?.data?.meta?.total as number;
             lastPage.current = last;
         }
     }, [state]);

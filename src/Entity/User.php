@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Role\RoleEnum;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -32,6 +33,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $passphrase = null;
+
+    #[ORM\Column(nullable: true, enumType: RoleEnum::class)]
+    #[Groups(['user_read'])]
+    private ?RoleEnum $role = null;
 
     public function getEmail(): ?string
     {
@@ -101,6 +106,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPassphrase(?string $passphrase): static
     {
         $this->passphrase = $passphrase;
+
+        return $this;
+    }
+
+    public function getRole(): ?RoleEnum
+    {
+        return $this->role;
+    }
+
+    public function setRole(?RoleEnum $role): static
+    {
+        $this->role = $role;
 
         return $this;
     }
