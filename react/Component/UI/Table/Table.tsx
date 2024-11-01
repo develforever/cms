@@ -31,6 +31,7 @@ const Table = <D extends ResponseDataInterface, R extends ResponseDataInterface,
 
     const [page, setPage] = useState<number>(+(queryParams.get("page") || "1"));
     const [state, dispatch] = useDataService<R>(url);
+    const [isLoading, setIsLoading] = useState(false);
 
     const updateQueryParam = (key: string, value: string) => {
         queryParams.set(key, value);
@@ -41,6 +42,7 @@ const Table = <D extends ResponseDataInterface, R extends ResponseDataInterface,
     let lastPage = useRef(1);
 
     const memoDispatch = useCallback(() => {
+        setIsLoading(true);
         dispatch({
             method: "GET",
             params: {
@@ -55,14 +57,15 @@ const Table = <D extends ResponseDataInterface, R extends ResponseDataInterface,
     }, [page]);
 
     useEffect(() => {
-        
+
     }, [location.search]);
 
     useEffect(() => {
         if (state.status === Status.success) {
             // @ts-ignore
-            let last: number = state.result?.data?.meta?.total as number;
+            let last: number = state.result?.data?.meta?.total_pages as number;
             lastPage.current = last;
+            setIsLoading(false);
         }
     }, [state]);
 
@@ -97,7 +100,7 @@ const Table = <D extends ResponseDataInterface, R extends ResponseDataInterface,
         });
     }, []);
 
-    const firstRow:D = data && data.length > 0 ? data[0] : {} as D;
+    const firstRow: D = data && data.length > 0 ? data[0] : {} as D;
     const columnNames = cols ? Object.keys(cols) : Object.keys(firstRow.data);
     const columnLabels = cols ? cols : {};
 
@@ -106,7 +109,7 @@ const Table = <D extends ResponseDataInterface, R extends ResponseDataInterface,
     });
 
     if (showActions) {
-        tableHeader.push(<th key={-1}>Actions</th>);
+        tableHeader.push(<th className="text-end" key={-1}>Actions</th>);
     }
 
     const tableRows = data?.map((r, i) => {
@@ -116,7 +119,7 @@ const Table = <D extends ResponseDataInterface, R extends ResponseDataInterface,
             });
 
         if (showActions) {
-            cells.push(<td key={-1}>
+            cells.push(<td className="text-end" key={-1}>
                 <a className="btn btn-primary" onClick={e => onClickView(e, r)}>View</a>
             </td>);
         }
@@ -126,20 +129,29 @@ const Table = <D extends ResponseDataInterface, R extends ResponseDataInterface,
         </tr>
     });
 
-    return (<table className="table table-striped">
-        <thead><tr>{tableHeader}</tr></thead>
-        <tbody>{tableRows}</tbody>
-        <tfoot>
-            <tr>
-                <td>
-                    <a className="btn btn-primary" href="#" onClickCapture={onClickFirst}>first</a>
-                    <a className="btn btn-primary" href="#" onClickCapture={onClickPrev}>prev</a>
-                    <a className="btn btn-primary" href="#" onClickCapture={onClickNext}>next</a>
-                    <a className="btn btn-primary" href="#" onClickCapture={onClickLast}>last</a>
-                </td>
-            </tr>
-        </tfoot>
-    </table>)
+    return (<div className="border rounded p-2 ms-1 me-1">
+        <table className="table table-striped table-bordered">
+            <thead><tr>{tableHeader}</tr></thead>
+            <tbody>
+                {!isLoading && tableRows}
+                {isLoading && <tr>
+                    <td colSpan={tableHeader.length}>
+                        <div>Loading ...</div>
+                    </td>
+                </tr>}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colSpan={tableHeader.length}>
+                        <a className="btn btn-primary" href="#" onClickCapture={onClickFirst}>first</a>
+                        <a className="btn btn-primary" href="#" onClickCapture={onClickPrev}>prev</a>
+                        <a className="btn btn-primary" href="#" onClickCapture={onClickNext}>next</a>
+                        <a className="btn btn-primary" href="#" onClickCapture={onClickLast}>last</a>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>)
 
 }
 

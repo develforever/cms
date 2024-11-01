@@ -1,6 +1,6 @@
-"use strict";
+'use strict';
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 
 // app
@@ -8,17 +8,13 @@ import App from "@app/App";
 import Modals from "@app/Modals";
 import AppContext from "@app/AppContext";
 import useAppStateInit from "@app/AppState";
-import { ModalProps } from "@app/Modal";
-import { ModalPluginEvent, ModalsPluginEvent } from "@app/AppState/Plugin/ModalsPlugin";
-import { AppState } from "./Types/AppTypes";
-import { generatePath } from "react-router-dom";
 
 
-const Root: React.FC<{ children?: any }> = ({ children }) => {
+const Root: React.FC<{ children?: any, initConfig?: any }> = ({ children, initConfig }) => {
 
     console.log('root render');
-    
-    const [state, setState] = useAppStateInit();
+
+    const [state, setState] = useAppStateInit(initConfig);
 
     useEffect(() => {
 
@@ -61,12 +57,12 @@ const Root: React.FC<{ children?: any }> = ({ children }) => {
 }
 
 
-export default function () {
+export default function (initConfig: any) {
 
     // @ts-ignore
     const node = document.querySelector('#root.has-app')
     if (node) {
         const root = createRoot(node);
-        root.render(<Root></Root>);
+        root.render(<Root initConfig={initConfig}></Root>);
     }
 }

@@ -36,7 +36,8 @@ class PageController extends AbstractController
             'meta' => [
                 'current_page' => $params->page,
                 'per_page' => $params->limit,
-                'total' => $pagination['total'], // Całkowita liczba elementów bez paginacji
+                'total' => $pagination['total'],
+                'total_pages' => $pagination['total_pages']
             ],
         ];
 
@@ -74,5 +75,15 @@ class PageController extends AbstractController
         $this->manager->flush();
 
         return new JsonResponse($this->serializer->serialize($page, 'json', ['groups' => 'user_read']), 200, [], true);
+    }
+
+    #[Route('/api/page/show/{id}', name: 'app_api_page_show', methods: 'GET')]
+    public function show(
+        #[MapQueryParameter] int $id,
+    ): JsonResponse {
+
+        $page = $this->pageRepository->find($id);
+
+        return new JsonResponse($this->serializer->serialize($page, 'json', ['groups' => 'user_read_full']), 200, [], true);
     }
 }

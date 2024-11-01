@@ -30,7 +30,7 @@ services:
         arguments:
                 - '@service_container'
                 
-    App\Serializer\WrappedProductNormalizer:
+    App\Serializer\WrappedPageNormalizer:
         arguments:
             - '@serializer.normalizer.object'
         tags: ['serializer.normalizer']

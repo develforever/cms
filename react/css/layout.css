@@ -3,6 +3,7 @@ body {
     --bs-body-color: #d9d9d9;
     --bs-dark-bg-subtle: #393939;
     --bs-link-color-rgb: #0d6efd42;
+    --bs-body-bg: #6a6a6a;
 }
 
 .card {
@@ -20,6 +21,11 @@ body {
     --bs-breadcrumb-item-active-color: #ebebeb;
     --bs-breadcrumb-divider: '';
     --bs-breadcrumb-margin-bottom: 0;
+}
+
+.btn {
+    --bs-btn-padding-x: 0.15rem;
+    --bs-btn-padding-y: 0.18rem;
 }
 
 @keyframes example {

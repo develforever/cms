@@ -3,12 +3,14 @@ import { ResponseDataInterface } from "@app/Services/DataService";
 
 export const ApiTokenName = 'panel:api';
 
-export enum ApiEndpointNames {
-    /** @deprecated use link from api meta returned from page list */
-    PAGE_STORE = "/api/page/store",
-    /** @deprecated */
-    PAGE_LIST = "/api/page/list",
+export enum ApiEndpoint {
     USER_LOGIN = "/api/login",
+};
+
+export enum ApiEndpointNames {
+    PAGE_LIST = "app_api_page_list",
+    PAGE_STORE = "app_api_page_store",
+    PAGE_UPDATE = "app_api_page_update",
 };
 
 export interface ApiResource extends ResponseDataInterface {
@@ -33,17 +35,12 @@ export interface ApiUserResource extends ApiResource {
 
 export type ApiResponsePageList = {
     data: ApiPageResource[],
-    links: {
-        self: string,
-        first: string,
-        last: string,
-        prev: string,
-        next: string
-    },
+    links: { [key: string]: string },
     meta: {
         current_page: number,
         per_page: number,
-        total: number
+        total: number,
+        total_pages: number
     }
 };
 

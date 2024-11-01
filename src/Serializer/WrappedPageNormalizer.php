@@ -3,17 +3,15 @@
 namespace App\Serializer;
 
 use App\Entity\Page;
+use stdClass;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
-class WrappedProductNormalizer implements NormalizerInterface
+class WrappedPageNormalizer implements NormalizerInterface
 {
-    private $normalizer;
 
-    public function __construct(ObjectNormalizer $normalizer)
-    {
-        $this->normalizer = $normalizer;
-    }
+    public function __construct(private ObjectNormalizer $normalizer, private UrlGeneratorInterface $urlGenerator) {}
 
     public function getSupportedTypes(?string $format): array
     {
@@ -33,7 +31,11 @@ class WrappedProductNormalizer implements NormalizerInterface
 
         return [
             'data' => $normalizedData,
-            'meta' => [],
+            'links' => [
+                'app_api_page_update' => $this->urlGenerator->generate('app_api_page_update', ['id' => $object->getId()]),
+                'app_api_page_show' => $this->urlGenerator->generate('app_api_page_show', ['id' => $object->getId()]),
+            ],
+            'meta' => new stdClass,
         ];
     }
 }

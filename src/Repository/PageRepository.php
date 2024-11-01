@@ -30,10 +30,12 @@ class PageRepository extends ServiceEntityRepository
 
         // Zwracamy wyniki oraz całkowitą liczbę elementów dla paginacji
         $results = $queryBuilder->getQuery()->getResult();
+        $count = $this->count([]);
 
         return [
             'result' => $results,
-            'total' => $this->count([]), // Całkowita liczba elementów bez paginacji
+            'total' => $count,
+            'total_pages' => ceil($count / $limit),
         ];
     }
 

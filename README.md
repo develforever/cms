@@ -2,20 +2,21 @@
 
 ## Start in VSCode and Docker Compose
 
-Create copy of `.env.local` file from `.envv.local.dist` and fill it up.
-
-Add configurations and launch.
+Add configurations and launch:
 
 `launch.json`
 
 ```
 {
+    
     "name": "Launch Chrome",
     "request": "launch",
     "type": "chrome",
     "url": "http://localhost:9080",
     "webRoot": "${workspaceFolder}",
     "preLaunchTask": "dev:run",
+    // "sourceMaps": true,
+    // "port": 9222,
     "runtimeArgs": [
         "--remote-debugging-port=9222",
         "--disable-web-security",
@@ -24,10 +25,24 @@ Add configurations and launch.
         "--auto-open-devtools-for-tabs ",
     ],
     "env": {
-        "NODE_ENV": "production"
+        "NODE_ENV": "development"
+    }
+        
+},
+{
+    "name": "Listen for Xdebug",
+    "type": "php",
+    "request": "launch",
+    "port": 9003,
+    "hostname": "172.31.144.200",
+    "stopOnEntry": false,
+    "log": true,
+    "pathMappings": {
+        "/var/www/html/": "${workspaceFolder}",
     }
 }
 ```
+Add task configuration:
 
 `tasks.josn`
 

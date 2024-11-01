@@ -8,15 +8,8 @@ import { useCallback, useContext, useEffect, useRef } from "react";
 
 function useUserAuth() {
 
-    console.debug('user:auth');
-
     const context = useContext(AppContext);
-    const [stateToken, dispatchTokenCreate] = useDataService<ApiResponseToken>('/api/login');
     const [stateUser, dispatchUser] = useDataService<ApiResponseUser>('/api/user');
-
-    let tokenCallback = useCallback(async (email: string, password: string) => {
-        dispatchTokenCreate({ data: { email, password } });
-    }, []);
 
     let userCallback = useCallback(async () => {
         dispatchUser({});
@@ -25,17 +18,14 @@ function useUserAuth() {
     useEffect(() => {
         if (stateUser.status === Status.success) {
             let user = stateUser.result?.data.data;
-            if (user?.email) {
-                // @ts-ignore
-                user.username = user?.email;
-            }
             let links = stateUser.result?.data.links;
+            let meta = stateUser.result?.data.meta;
 
-            context.dispatch({ user, links });
+            context.dispatch({ user, links, meta,});
         }
     }, [stateUser.status]);
 
-    return [tokenCallback, userCallback] as const;
+    return [userCallback] as const;
 
 }
 

@@ -2,15 +2,14 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>
-			{% block title %}
-			{% endblock %}
-		</title>
+		<title>{{site_name}}</title>
 
 		{% block javascripts %}
 			<script type="module">
 				import app from '/js/root.js';
-				app();
+				app({
+					title: '{{site_name}}'
+				});
 			</script>
 		{% endblock %}
 	</head>

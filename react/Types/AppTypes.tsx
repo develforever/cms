@@ -2,7 +2,7 @@ import { RouteObject } from "react-router"
 import { Subject } from "rxjs"
 
 export type User = {
-    username: string
+    email: string
     role: string,
 }
 export type ModalConfig = {
@@ -18,6 +18,7 @@ export type AppState = {
     user: null | User,
     modals?: ModalConfig[],
     links?: { [key: string]: string },
+    meta?: { [key: string]: string },
     routes: RouteObject[],
     token?: string,
     xcsrf?: string,

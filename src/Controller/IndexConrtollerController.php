@@ -17,10 +17,7 @@ class IndexConrtollerController extends AbstractController
     #[Route('/', name: 'homepage')]
     public function index(): Response
     {
-        $data = [
-            'controller_name' => self::class,
-        ];
 
-        return $this->render('index_conrtoller/index.html.twig', $data);
+        return $this->render('index_conrtoller/index.html.twig');
     }
 }

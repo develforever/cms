@@ -58,7 +58,11 @@ class ApiController extends AbstractController
     {
         $jsonContent = $serializer->serialize([
             'data' => $this->getUser(),
-            'links' => new \stdClass(),
+            'links' => [
+                'app_api_page_list' => $this->generateUrl('app_api_page_list'),
+                'app_api_page_store' => $this->generateUrl('app_api_page_store'),
+                'app_api_page_update' => $this->generateUrl('app_api_page_update', ['id'=>'{id}']),
+            ],
             'meta' => new \stdClass(),
         ], 'json', [
             'groups' => ['user_read'],

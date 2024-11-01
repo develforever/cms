@@ -4,6 +4,6 @@ namespace App\Entity\Role;
 
 enum RoleEnum: string
 {
-    case ADMIN = 'RADMIN';
-    case USER = 'RUSER';
+    case ADMIN = 'ADMIN';
+    case USER = 'USER';
 }

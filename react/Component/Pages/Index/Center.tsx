@@ -1,33 +1,46 @@
 import { LayoutSlotProps } from "@app/Layout"
-import React, { useContext, useEffect } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import Card from "@app/Component/UI/Card"
 import { Link } from "react-router-dom"
 import AppContext from "@app/AppContext"
 import Form from "@app/Component/UI/Form/Form"
-import { ApiEndpointNames } from "@app/Enum/Api"
+import { ApiEndpoint } from "@app/Enum/Api"
 import useUserAuth from "@app/Services/UserAuth"
+import useLocalStorage from "@app/Services/LocalStorage"
+
+
 
 const Center: React.FC<LayoutSlotProps> = ({ children }) => {
 
     const context = useContext(AppContext);
-    const [token, user] = useUserAuth();
+    const [user] = useUserAuth();
+    const [get, set, del] = useLocalStorage();
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
-        if (context.token) {
+        if (context.token && !context.isAuthenticated()) {
+            setIsLoading(true);
+            set('token', context.token);
             user();
         }
     }, [context.token]);
 
+    
+
     return <div className="d-flex">
-        {context.isAuthenticated() ?
+        {context.isAuthenticated() && context.token &&
             <Card>
                 <Link to={"panel"} key={0} >Go to panel</Link>
-            </Card>
-            : <div>
+            </Card>}
+        {!context.isAuthenticated() && context.token && <div>Loading ...</div>}
+        {!context.isAuthenticated() && !context.token && 
+        <div>
                 <Form
-                    url={ApiEndpointNames.USER_LOGIN}
+                    url={ApiEndpoint.USER_LOGIN}
                     onSuccess={(result: any) => {
-                        context.dispatch({ token: result?.data.token });
+                        if (result?.data.token) {
+                            context.dispatch({ token: result?.data.token });
+                        } 
                     }}
                 >
                     <div>

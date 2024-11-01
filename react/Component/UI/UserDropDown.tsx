@@ -16,7 +16,7 @@ function Comp(props: { children?: any }) {
         redirect();
     }, [user]);
 
-    let title = `${user?.username} (${user?.role})`;
+    let title = `${user?.email} (${user?.role})`;
 
     if (user) {
         return <DropDown title={ title }>

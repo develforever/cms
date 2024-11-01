@@ -8,6 +8,7 @@ import * as Home from "@app/Pages/Home";
 import * as Page from "@app/Pages/Page";
 import * as Account from "@app/Pages/Account";
 import * as Index from "@app/Pages/Index";
+import useLocalStorage from "./Services/LocalStorage";
 
 let panelsRoutes = [
     ...Home.getRoutes(),
@@ -18,7 +19,10 @@ let panelsRoutes = [
 let [state, setState]: [AppState, React.Dispatch<React.SetStateAction<AppState>>] = [{} as AppState, () => { }] as const;
 let statePlugins: AppStatePluginInterface[] = [];
 
-function useAppStateInit(): [AppState, React.Dispatch<React.SetStateAction<AppState>>] {
+function useAppStateInit(initConfig:any): [AppState, React.Dispatch<React.SetStateAction<AppState>>] {
+
+    const [get, set, del] = useLocalStorage();
+    const token = get('token');
 
     [state, setState] = useState<AppState>(() => {
 
@@ -27,11 +31,12 @@ function useAppStateInit(): [AppState, React.Dispatch<React.SetStateAction<AppSt
         const routeValues = routes(panelsRoutes);
         const routerObject = router(routeValues);
         let initialValues: AppState = {
-            title: "CMS Panel",
+            title: initConfig?.title,
             user: null,
             routes: routeValues,
             router: routerObject,
             xcsrf: globalThis.document.querySelector('meta[name="csrf-token"]')?.getAttribute('content'),
+            token,
             isAuthenticated: () => {
                 return state.user !== null;
             },
