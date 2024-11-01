@@ -9,18 +9,15 @@ interface StorageItem {
 function useLocalStorage() {
   const storage = globalThis.localStorage;
 
-  const get = useCallback(
-    (key: string) => {
-      console.debug(`get: ${key}`);
+  const get = useCallback((key: string) => {
+    console.debug(`get: ${key}`);
 
-      let item = JSON.parse(`${storage.getItem(key)}`) as StorageItem;
+    let item = JSON.parse(`${storage.getItem(key)}`) as StorageItem;
 
-      let value = item?.value;
+    let value = item?.value;
 
-      return value;
-    },
-    []
-  );
+    return value;
+  }, []);
 
   const set = useCallback(
     (key: string, value: string | number | object | null) => {
@@ -36,13 +33,10 @@ function useLocalStorage() {
     []
   );
 
-  const del = useCallback(
-    (key: string) => {
-      console.debug(`delete: ${key}`);
-      storage.removeItem(key);
-    },
-    []
-  );
+  const del = useCallback((key: string) => {
+    console.debug(`delete: ${key}`);
+    storage.removeItem(key);
+  }, []);
 
   return [get, set, del] as const;
 }

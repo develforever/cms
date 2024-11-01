@@ -1,14 +1,6 @@
 import React, { ReactNode, Suspense } from 'react';
 import { Config } from './Layout/Settings';
 
-import * as bootstrapcss from '@app/css/bootstrap.css';
-import * as appcss from '@app/css/app.css';
-import * as layoutcss from '@app/css/layout.css';
-
-bootstrapcss;
-appcss;
-layoutcss;
-
 export enum SlotNames {
   Top = 'top',
   Bottom = 'bottom',
@@ -22,48 +14,58 @@ export type LayoutSlotProps = {
   children?: any;
 };
 
-function Top(props) {
+interface CompProps {
+  children: React.ReactElement;
+  className?: string;
+  style?: { [key: string]: string | number };
+  dataSlot?: string;
+}
+
+function Top(props: CompProps) {
   return <div className={props.className}>{props.children}</div>;
 }
-function Bottom(props) {
+function Bottom(props: CompProps) {
   return <div className={props.className}>{props.children}</div>;
 }
-function Left(props) {
+function Left(props: CompProps) {
   return <div className={props.className}>{props.children}</div>;
 }
-function Right(props) {
+function Right(props: CompProps) {
   return <div className={props.className}>{props.children}</div>;
 }
 
-function Center(props) {
+function Center(props: CompProps) {
   return <div className={props.className}>{props.children}</div>;
 }
 
 const Layout: React.FC<{ children: any } | any> = ({ children, ...props }) => {
-  let top = Config.getDefaultTopComp();
-  let bottom = Config.getDefaultBottomComp();
-  let left = Config.getDefaultLeftComp();
-  let center = Config.getDefaultCenterComp<ReactNode>();
-  let right = Config.getDefaultRightComp();
+  let top = Config.getDefaultTopComp<React.ReactElement>();
+  let bottom = Config.getDefaultBottomComp<React.ReactElement>();
+  let left = Config.getDefaultLeftComp<React.ReactElement>();
+  let center = Config.getDefaultCenterComp<React.ReactElement>();
+  let right = Config.getDefaultRightComp<React.ReactElement>();
   let rest: React.ReactElement[] = [];
 
-  React.Children.forEach<React.ReactElement>(children, (child) => {
-    if (!React.isValidElement(child)) return;
+  React.Children.forEach<React.ReactElement<LayoutSlotProps>>(
+    children,
+    (child) => {
+      if (!React.isValidElement(child)) return;
 
-    if (child.props['data-slot'] === SlotNames.Top) {
-      top = child;
-    } else if (child.props['data-slot'] === SlotNames.Bottom) {
-      bottom = child;
-    } else if (child.props['data-slot'] === SlotNames.Left) {
-      left = child;
-    } else if (child.props['data-slot'] === SlotNames.Center) {
-      center = child;
-    } else if (child.props['data-slot'] === SlotNames.Right) {
-      right = child;
-    } else {
-      rest.push(child);
+      if (child.props?.['data-slot'] === SlotNames.Top) {
+        top = child;
+      } else if (child.props?.['data-slot'] === SlotNames.Bottom) {
+        bottom = child;
+      } else if (child.props?.['data-slot'] === SlotNames.Left) {
+        left = child;
+      } else if (child.props?.['data-slot'] === SlotNames.Center) {
+        center = child;
+      } else if (child.props?.['data-slot'] === SlotNames.Right) {
+        right = child;
+      } else {
+        rest.push(child);
+      }
     }
-  });
+  );
 
   return (
     <div {...props} className="d-flex flex-column position-relative">

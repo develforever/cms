@@ -9,7 +9,7 @@ import { Form as BaseForm, useActionData } from 'react-router-dom';
 interface FormProps {
   url: string;
   redirectUrl?: string;
-  okLabel?:string,
+  okLabel?: string;
   children?: React.ReactNode | React.ReactNode[];
   onSuccess?: (state: any) => void;
 }
@@ -18,7 +18,7 @@ const Form = <R extends ResponseDataInterface>({
   url,
   redirectUrl = undefined,
   children = undefined,
-  okLabel = "Ok",
+  okLabel = 'Ok',
   onSuccess = undefined,
 }: FormProps): React.ReactElement => {
   const actiondata = useActionData();

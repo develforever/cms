@@ -20,9 +20,7 @@ function useUserAuth() {
 
       context.dispatch({ user, links, meta });
     }
-  }, [
-    stateUser,
-  ]);
+  }, [stateUser]);
 
   return [userCallback] as const;
 }

@@ -7,6 +7,10 @@ import Modals from '@app/Modals';
 import AppContext from '@app/AppContext';
 import useAppStateInit from '@app/AppState';
 
+import '@app/css/bootstrap.css';
+import '@app/css/app.css';
+import '@app/css/theme1.css';
+
 export interface InitialConfig {
   title?: string;
 }
