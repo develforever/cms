@@ -20,4 +20,11 @@ class IndexConrtollerController extends AbstractController
 
         return $this->render('index_conrtoller/index.html.twig');
     }
+
+    #[Route('/logout', name: 'logout')]
+    public function logout(): Response
+    {
+
+        return $this->redirectToRoute('homepage');
+    }
 }

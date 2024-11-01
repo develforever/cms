@@ -15,6 +15,7 @@ export enum Status {
 
 export interface ResponseDataInterface {
   data: any;
+  meta?: {[key:string]:string|number}
 }
 
 type Response<T extends ResponseDataInterface> = {

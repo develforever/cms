@@ -4,12 +4,14 @@ import DropDown from './DropDown';
 import { Link } from 'react-router-dom';
 import useRedirect from '@app/hooks/useRedirect';
 import { RouteNames } from '@app/Enum/Route';
+import useLocalStorage from '@app/Services/LocalStorage';
 
 function Comp(props: { children?: any }) {
   const { user } = useContext(AppContext);
   const redirect = useRedirect(RouteNames.LOGOUT);
-
+  const [get, set, del] = useLocalStorage();
   let logout = useCallback(() => {
+    del('token');
     redirect();
   }, []);
 

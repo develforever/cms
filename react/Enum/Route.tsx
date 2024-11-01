@@ -8,6 +8,7 @@ export enum RouteNames {
   PANEL_PAGES = '/panel/pages',
   PANEL_PAGES_VIEW = '/panel/pages/:id/view',
   PANEL_PAGES_EDIT = '/panel/pages/:id/edit',
+  PANEL_CREATE_PAGE = '/panel/create/page',
   PANEL_USER_PROFILE = '/panel/account/profile',
   PANEL_USER_SETTINGS = '/panel/account/settings',
 }

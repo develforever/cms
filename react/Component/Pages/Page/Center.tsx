@@ -14,7 +14,8 @@ const Center: React.FC<LayoutSlotProps> = ({}) => {
   console.debug('page list render');
 
   const context = useContext(AppContext);
-  const navigate = useNavigate(RouteNames.PANEL_PAGES_VIEW);
+  const navigatePageView = useNavigate(RouteNames.PANEL_PAGES_VIEW);
+  const navigateCreate = useNavigate(RouteNames.PANEL_CREATE_PAGE);
 
   const url = context.links ? context.links[ApiEndpointNames.PAGE_LIST] : null;
 
@@ -24,12 +25,17 @@ const Center: React.FC<LayoutSlotProps> = ({}) => {
         <Table<ApiPageResource, ApiResponsePageList>
           url={url}
           onView={(row) => {
-            navigate({ id: row.data.id }, { state: { row } });
+            navigatePageView({ id: row.data.id }, { state: { row } });
           }}
           cols={{
             id: 'Id',
             title: 'Title',
           }}
+          customActions={<div>
+            <button className='btn btn-primary' onClick={()=>{
+              navigateCreate();
+            }}>Create</button>
+          </div>}
         ></Table>
       )}
     </div>
