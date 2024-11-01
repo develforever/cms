@@ -12,7 +12,6 @@ use Symfony\Component\Serializer\Attribute\Groups;
 #[ORM\Entity(repositoryClass: PageRepository::class)]
 class Page
 {
-
     use SoftDeleteableEntity;
     use TimestampableEntity;
 

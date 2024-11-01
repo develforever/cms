@@ -2,8 +2,8 @@
 
 namespace App\DTO\Api;
 
-class PagePatchDTO {
-
+class PagePatchDTO
+{
     public ?string $title = null;
     public ?string $content = null;
 }

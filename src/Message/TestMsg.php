@@ -2,7 +2,6 @@
 
 namespace App\Message;
 
-
 class TestMsg
 {
     public function __construct(

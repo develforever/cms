@@ -2,15 +2,12 @@
 
 namespace App\Command;
 
-use App\Entity\User;
 use App\Service\HashService;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -27,7 +24,7 @@ class TestHashing extends Command
         private HashService $hashService,
         private LoggerInterface $logger,
         private EntityManagerInterface $entityManager,
-        
+
         #[Autowire('%kernel.project_dir%')]
         private string $rootDir,
     ) {
@@ -36,14 +33,11 @@ class TestHashing extends Command
 
     protected function configure(): void
     {
-        
-        
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        
 
         $privateKey = file_get_contents('var/tmp_priv.pem');
         $encoded = $this->hashService->aesEncrypt($privateKey);
@@ -70,7 +64,6 @@ class TestHashing extends Command
         // var_dump($this->hashService->decrypt($cryptedPrivateKey));
         // var_dump($this->hashService->decrypt($cryptedPublicKey));
         // var_dump($this->hashService->decrypt($cryptedPassphraseKey));
-
 
         return Command::SUCCESS;
     }

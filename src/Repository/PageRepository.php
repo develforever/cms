@@ -17,10 +17,8 @@ class PageRepository extends ServiceEntityRepository
     }
 
     /**
-     * Undocumented function
+     * Undocumented function.
      *
-     * @param integer $page
-     * @param integer $limit
      * @return array<string, mixed>
      */
     public function findPaginated(int $page = 1, int $limit = 10): array

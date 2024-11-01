@@ -18,18 +18,17 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class PageController extends AbstractController
 {
-
     public function __construct(
         private PageRepository $pageRepository,
         private EntityManagerInterface $manager,
-        private SerializerInterface $serializer
-    ) {}
+        private SerializerInterface $serializer,
+    ) {
+    }
 
     #[Route('/api/page/list', name: 'app_api_page_list', methods: 'GET')]
     public function index(
         #[MapQueryString] ?PageListDTO $params = new PageListDTO(),
     ): JsonResponse {
-
         $pagination = $this->pageRepository->findPaginated($params->page, $params->limit);
 
         $result = [
@@ -38,11 +37,11 @@ class PageController extends AbstractController
                 'current_page' => $params->page,
                 'per_page' => $params->limit,
                 'total' => $pagination['total'], // Całkowita liczba elementów bez paginacji
-            ]
+            ],
         ];
 
-        return new JsonResponse($this->serializer->serialize($result, 'json', ['groups' => 'user_read']), 200,  [
-            'groups' => ['user_read']
+        return new JsonResponse($this->serializer->serialize($result, 'json', ['groups' => 'user_read']), 200, [
+            'groups' => ['user_read'],
         ], true);
     }
 
@@ -50,17 +49,15 @@ class PageController extends AbstractController
     public function store(
         #[MapRequestPayload] PageStoreDTO $params,
     ): JsonResponse {
-
         $page = new Page();
         $page->setTitle($params->title);
         $page->setContent($params->content);
 
-
         $this->manager->persist($page);
         $this->manager->flush();
 
-        return new JsonResponse($this->serializer->serialize($page, 'json', ['groups' => 'user_read']), 200,  [
-            'groups' => ['user_read']
+        return new JsonResponse($this->serializer->serialize($page, 'json', ['groups' => 'user_read']), 200, [
+            'groups' => ['user_read'],
         ], true);
     }
 
@@ -69,11 +66,9 @@ class PageController extends AbstractController
         #[MapRequestPayload] PagePatchDTO $params,
         #[MapQueryParameter] int $id,
     ): JsonResponse {
-
         $page = $this->pageRepository->find($id);
         $page->setTitle($params->title);
         $page->setContent($params->content);
-
 
         $this->manager->persist($page);
         $this->manager->flush();

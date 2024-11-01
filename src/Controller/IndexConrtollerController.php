@@ -9,20 +9,18 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class IndexConrtollerController extends AbstractController
 {
-
     public function __construct(
-        private HashService $hashService,)
+        private HashService $hashService, )
     {
-        
     }
 
     #[Route('/', name: 'homepage')]
     public function index(): Response
     {
-
-        $data =[
+        $data = [
             'controller_name' => self::class,
         ];
+
         return $this->render('index_conrtoller/index.html.twig', $data);
     }
 }
