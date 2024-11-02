@@ -1,8 +1,13 @@
 import AppContext from '@app/AppContext';
+import useLocalStorage from '@app/Services/LocalStorage';
+import useUserAuth from '@app/Services/UserAuth';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 
 const Guard: React.FC<any> = ({ children }) => {
   const context = useContext(AppContext);
+  const [user] = useUserAuth();
+  const [get, set, del] = useLocalStorage();
+
   let loginRequired = false;
 
   let subRouter = (state: any) => {
@@ -23,6 +28,13 @@ const Guard: React.FC<any> = ({ children }) => {
 
     subRouter(context.router?.state);
   }, [context.router]);
+
+  useEffect(() => {
+    if (context.token && !context.isAuthenticated()) {
+      set('token', context.token);
+      user();
+    }
+  }, [context.token]);
 
   return <>{!loginRequired ? children : null}</>;
 };
