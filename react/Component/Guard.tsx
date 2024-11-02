@@ -1,33 +1,30 @@
 import AppContext from '@app/AppContext';
-import React, { useCallback, useContext, useEffect, useRef } from 'react';
-import { useNavigation } from 'react-router-dom';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 
 const Guard: React.FC<any> = ({ children }) => {
   const context = useContext(AppContext);
+  let loginRequired = false;
 
-  const nav = useNavigation();
-
-  let subRouter = useCallback(
-    (state: any) => {
-      console.log({ ...state }, nav);
-    },
-    [nav]
-  );
+  let subRouter = (state: any) => {
+    let path = state.location.pathname;
+    console.debug(`guard ${path}`);
+    if (!context.isAuthenticated() && !context.token && path !== '/') {
+      context.router?.navigate('/');
+    }
+  };
 
   let sub: any = useRef(null);
 
   useEffect(() => {
-    console.log(context.isAuthenticated);
     if (sub.current) {
       return;
     }
-    console.log('route changed', context);
-
     sub.current = context.router?.subscribe(subRouter);
-  }, [context, subRouter]);
 
-  console.log(context.isAuthenticated);
-  return <>{context.isAuthenticated() ? children : null}</>;
+    subRouter(context.router?.state);
+  }, [context.router]);
+
+  return <>{!loginRequired ? children : null}</>;
 };
 
 export default Guard;
