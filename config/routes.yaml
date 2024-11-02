@@ -7,3 +7,9 @@ controllers:
 api_login:
     path: /api/login
     methods: ['POST']
+
+wildcard_404:
+  path: '/{any}'
+  controller: App\Controller\IndexConrtoller::index
+  requirements:
+    any: .*

@@ -2,7 +2,7 @@ import AppContext from '@app/AppContext';
 import Table from '@app/Component/UI/Table/Table';
 import {
   ApiEndpointNames,
-  ApiPageResource,
+  ApiPageListResource,
   ApiResponsePageList,
 } from '@app/Enum/Api';
 import { RouteNames } from '@app/Enum/Route';
@@ -15,6 +15,7 @@ const Center: React.FC<LayoutSlotProps> = ({}) => {
 
   const context = useContext(AppContext);
   const navigatePageView = useNavigate(RouteNames.PANEL_PAGES_VIEW);
+  const navigatePageEdit = useNavigate(RouteNames.PANEL_PAGES_EDIT);
   const navigateCreate = useNavigate(RouteNames.PANEL_CREATE_PAGE);
 
   const url = context.links ? context.links[ApiEndpointNames.PAGE_LIST] : null;
@@ -22,10 +23,13 @@ const Center: React.FC<LayoutSlotProps> = ({}) => {
   return (
     <div className="overflow-y-hidden">
       {url && (
-        <Table<ApiPageResource, ApiResponsePageList>
+        <Table<ApiPageListResource, ApiResponsePageList>
           url={url}
           onView={(row) => {
             navigatePageView({ id: row.data.id }, { state: { row } });
+          }}
+          onEdit={(row) => {
+            navigatePageEdit({ id: row.data.id }, { state: { row } });
           }}
           cols={{
             id: 'Id',

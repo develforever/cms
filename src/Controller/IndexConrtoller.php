@@ -7,7 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-class IndexConrtollerController extends AbstractController
+class IndexConrtoller extends AbstractController
 {
     public function __construct(
         private HashService $hashService, )

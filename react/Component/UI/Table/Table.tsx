@@ -16,6 +16,7 @@ interface TableProps<D> {
   cols?: { [key: string]: string };
   showActions?: boolean;
   onView?: (row: D) => void;
+  onEdit?: (row: D) => void;
   url?: string;
   customActions?: ReactElement|ReactElement[]
 }
@@ -28,6 +29,7 @@ const Table = <
   showActions = true,
   cols = {},
   onView = undefined,
+  onEdit = undefined,
   customActions = undefined,
 }: TableProps<D>): React.ReactElement => {
   if (!url) {
@@ -92,6 +94,15 @@ const Table = <
       }
     },
     [onView]
+  );
+
+  const onClickEdit = useCallback(
+    (r: D) => {
+      if (onEdit) {
+        onEdit(r);
+      }
+    },
+    [onEdit]
   );
 
   const onClickFirst = useCallback(() => {
@@ -161,6 +172,9 @@ const Table = <
         <td className="text-end" key={-1}>
           <a className="btn btn-primary" onClick={() => onClickView(r)}>
             View
+          </a>
+          <a className="btn btn-secondary" onClick={() => onClickEdit(r)}>
+            Edit
           </a>
         </td>
       );

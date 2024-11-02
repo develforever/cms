@@ -1,10 +1,13 @@
 import { LayoutSlotProps } from '@app/Layout';
-import React from 'react';
+import React, { useEffect } from 'react';
 import Card from '@app/Component/UI/Card';
 import { generatePath, Link, useLocation } from 'react-router-dom';
+import { ApiEndpointNames, ApiResponsePage } from '@app/Enum/Api';
+import useDataService from '@app/Services/DataService';
 
 const Center: React.FC<LayoutSlotProps> = ({}) => {
   const location = useLocation();
+  const row = location.state.row;  
 
   return (
     <Card title={location.state.row.data.title}>

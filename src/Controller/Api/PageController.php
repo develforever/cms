@@ -65,7 +65,7 @@ class PageController extends AbstractController
     #[Route('/api/page/update/{id}', name: 'app_api_page_update', methods: 'PATCH')]
     public function update(
         #[MapRequestPayload] PagePatchDTO $params,
-        #[MapQueryParameter] int $id,
+        int $id,
     ): JsonResponse {
         $page = $this->pageRepository->find($id);
         $page->setTitle($params->title);
@@ -74,15 +74,13 @@ class PageController extends AbstractController
         $this->manager->persist($page);
         $this->manager->flush();
 
-        return new JsonResponse($this->serializer->serialize($page, 'json', ['groups' => 'user_read']), 200, [], true);
+        return new JsonResponse($this->serializer->serialize($page, 'json', ['groups' => 'user_read_full']), 200, [], true);
     }
 
     #[Route('/api/page/show/{id}', name: 'app_api_page_show', methods: 'GET')]
     public function show(
-        #[MapQueryParameter] int $id,
+        Page $page,
     ): JsonResponse {
-
-        $page = $this->pageRepository->find($id);
 
         return new JsonResponse($this->serializer->serialize($page, 'json', ['groups' => 'user_read_full']), 200, [], true);
     }

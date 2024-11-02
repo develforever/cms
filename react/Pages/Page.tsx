@@ -25,6 +25,10 @@ export function getRoutes(): RouteObject[] {
           handle: {
             name: 'Page :id',
           },
+          action: async ({ request }) => {
+            let formData = await request.formData();
+            return formData;
+          },
         },
         {
           id: 'page_details',

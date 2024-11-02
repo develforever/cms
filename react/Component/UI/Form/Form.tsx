@@ -8,6 +8,7 @@ import { Form as BaseForm, useActionData } from 'react-router-dom';
 
 interface FormProps {
   url: string;
+  method?:string,
   redirectUrl?: string;
   okLabel?: string;
   children?: React.ReactNode | React.ReactNode[];
@@ -16,6 +17,7 @@ interface FormProps {
 
 const Form = <R extends ResponseDataInterface>({
   url,
+  method = undefined,
   redirectUrl = undefined,
   children = undefined,
   okLabel = 'Ok',
@@ -27,7 +29,7 @@ const Form = <R extends ResponseDataInterface>({
 
   useEffect(() => {
     if (actiondata) {
-      dispatch({ data: actiondata });
+      dispatch({ method, data: actiondata });
     }
   }, [actiondata]);
 
