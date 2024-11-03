@@ -3,13 +3,12 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>{{site_name}}</title>
+		<meta name="csrf-token" content="{{ csrf_token('intention') }}"/>
 
 		{% block javascripts %}
 			<script type="module">
 				import app from '/js/root.js';
-				app({
-					title: '{{site_name}}'
-				});
+app({title: '{{ site_name }}'});
 			</script>
 		{% endblock %}
 	</head>

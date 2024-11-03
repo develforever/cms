@@ -2,6 +2,7 @@ import React from 'react';
 import { createBrowserRouter, Outlet, RouteObject } from 'react-router-dom';
 import ErrorPage from '@app/Pages/ErrorPage';
 import Index from '@app/Pages/Index';
+import Login from '@app/Pages/Index/Login';
 
 function routes(panelsRoutes?: RouteObject[]): RouteObject[] {
   let routeValues: RouteObject[] = [
@@ -15,11 +16,18 @@ function routes(panelsRoutes?: RouteObject[]): RouteObject[] {
       },
       children: [
         {
-          path: '/',
+          index: true,
           element: <Index></Index>,
+        },
+        {
+          path: 'login',
+          element: <Login></Login>,
           action: async ({ request }) => {
             let formData = await request.formData();
             return formData;
+          },
+          handle: {
+            name: 'Login',
           },
         },
         {

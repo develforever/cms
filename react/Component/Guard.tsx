@@ -5,20 +5,17 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 
 const Guard: React.FC<any> = ({ children }) => {
   const context = useContext(AppContext);
-  const [user] = useUserAuth();
-  const [get, set, del] = useLocalStorage();
+  let sub: any = useRef(null);
 
-  let loginRequired = false;
+  let [loginRequired, setLoginRequired] = useState<boolean | null>(null);
 
   let subRouter = (state: any) => {
     let path = state.location.pathname;
     console.debug(`guard ${path}`);
     if (!context.isAuthenticated() && !context.token && path !== '/') {
-      context.router?.navigate('/');
+      setLoginRequired(true);
     }
   };
-
-  let sub: any = useRef(null);
 
   useEffect(() => {
     if (sub.current) {
@@ -31,12 +28,21 @@ const Guard: React.FC<any> = ({ children }) => {
 
   useEffect(() => {
     if (context.token && !context.isAuthenticated()) {
-      set('token', context.token);
-      user();
+      setLoginRequired(true);
     }
   }, [context.token]);
 
-  return <>{!loginRequired ? children : null}</>;
+  return (
+    <>
+      {loginRequired === false ? (
+        <div>
+          <p>Login required</p>
+        </div>
+      ) : (
+        children
+      )}
+    </>
+  );
 };
 
 export default Guard;
