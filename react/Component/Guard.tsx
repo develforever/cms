@@ -1,18 +1,24 @@
 import AppContext from '@app/AppContext';
+import { RouteNames } from '@app/Enum/Route';
 import useLocalStorage from '@app/Services/LocalStorage';
-import useUserAuth from '@app/Services/UserAuth';
 import React, { useContext, useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const Guard: React.FC<any> = ({ children }) => {
   const context = useContext(AppContext);
   let sub: any = useRef(null);
+  const [get, set, del] = useLocalStorage();
 
   let [loginRequired, setLoginRequired] = useState<boolean | null>(null);
 
   let subRouter = (state: any) => {
     let path = state.location.pathname;
-    console.debug(`guard ${path}`);
-    if (!context.isAuthenticated() && !context.token && path !== '/') {
+    let token = get('token');
+    console.log('token', token);
+    if (
+      (!token || (!context.isAuthenticated() && !context.token)) &&
+      [RouteNames.HOME, RouteNames.LOGIN].indexOf(path) === -1
+    ) {
       setLoginRequired(true);
     }
   };
@@ -27,16 +33,27 @@ const Guard: React.FC<any> = ({ children }) => {
   }, [context.router]);
 
   useEffect(() => {
-    if (context.token && !context.isAuthenticated()) {
+    let path = globalThis.location.pathname;
+    if (
+      context.token &&
+      !context.isAuthenticated() &&
+      [RouteNames.HOME, RouteNames.LOGIN]
+        .map((e: RouteNames) => {
+          return `${e}`;
+        })
+        .indexOf(path) === -1
+    ) {
       setLoginRequired(true);
     }
   }, [context.token]);
 
   return (
     <>
-      {loginRequired === false ? (
-        <div>
-          <p>Login required</p>
+      {loginRequired === true ? (
+        <div className="p-4">
+          <p>
+            <a href={RouteNames.LOGIN}>Login</a>
+          </p>
         </div>
       ) : (
         children

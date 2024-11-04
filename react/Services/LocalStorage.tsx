@@ -1,5 +1,3 @@
-import { useCallback } from 'react';
-
 interface StorageItem {
   expire: number;
   created: number;
@@ -10,11 +8,17 @@ function useLocalStorage() {
   const storage = globalThis.localStorage;
 
   const get = (key: string) => {
-    console.debug(`get: ${key}`);
-
     let item = JSON.parse(`${storage.getItem(key)}`) as StorageItem;
 
-    let value = item?.value;
+    if (!item) {
+      return null;
+    }
+
+    let expire = item.expire;
+    if (expire < Date.now()) {
+      return null;
+    }
+    let value = item.value;
 
     return value;
   };
@@ -25,8 +29,6 @@ function useLocalStorage() {
       expire: Date.now() + 1000 * 3600,
       value,
     });
-    console.debug(`set: ${key} => ${value}`);
-    console.debug('set run');
     storage.setItem(key, data);
   };
 
