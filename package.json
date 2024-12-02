@@ -9,7 +9,8 @@
   "scripts": {
     "build": "webpack --mode production",
     "predev": "bash $HOME/.nvm/nvm.sh use; docker compose up -d; printenv | grep NODE",
-    "dev": "webpack --watch",
+    "dev": "NODE_OPTIONS=\"--inspect=localhost:9092\" webpack --watch",
+    "dev:webpack": "webpack",
     "lint": "eslint --flag unstable_ts_config --config eslint.config.ts",
     "lint:fix": "eslint --fix --flag unstable_ts_config --config eslint.config.ts",
     "prettier": "prettier --write --config .prettierrc 'react/**/*.tsx'"
@@ -21,6 +22,7 @@
     "@reactivex/rxjs": "^6.6.7",
     "@types/uuid": "^10.0.0",
     "axios": "^1.7.7",
+    "glob": "^11.0.0",
     "next": "^14.2.9",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

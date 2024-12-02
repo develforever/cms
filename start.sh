@@ -1,5 +1,7 @@
 #!/bin/bash 
 
+source $HOME/.nvm/nvm.sh
+
 composer install
 
 chash=$(git rev-parse HEAD)

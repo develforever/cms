@@ -7,8 +7,8 @@
 
 		{% block javascripts %}
 			<script type="module">
-				import app from '/js/root.js';
-app({title: '{{ site_name }}'});
+				import app from '/js/{{ entryname }}.js';
+				app({title: '{{ site_name }}'});
 			</script>
 		{% endblock %}
 	</head>

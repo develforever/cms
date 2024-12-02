@@ -30,3 +30,7 @@ export type AppState = {
   };
   dispatch: (newState: object) => void;
 };
+
+export interface InitialConfig {
+  title?: string;
+}

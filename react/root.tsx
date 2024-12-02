@@ -10,10 +10,8 @@ import useAppStateInit from '@app/AppState';
 import '@app/css/bootstrap.css';
 import '@app/css/app.css';
 import '@app/css/theme1.css';
+import { InitialConfig } from '@app/Types/AppTypes';
 
-export interface InitialConfig {
-  title?: string;
-}
 
 const Root: React.FC<{ initConfig?: InitialConfig }> = ({ initConfig }) => {
   console.log('root render');

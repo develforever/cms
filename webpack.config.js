@@ -1,11 +1,13 @@
 
 const path = require("path");
 const webpack = require('webpack');
+var IndexWebpackPlugin = require('./react/docs/IndexWebpackPlugin');
 
 module.exports = {
     devtool: 'source-map',
     entry: {
-        root: "./react/root.tsx"
+        root: "./react/root.tsx",
+        docs: "./react/docs.tsx"
     },
     stats: {
         logging: "verbose",
@@ -16,6 +18,7 @@ module.exports = {
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
         }),
+        new IndexWebpackPlugin()
     ],
     mode: process.env.NODE_ENV || 'development',
     experiments: {

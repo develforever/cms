@@ -4,6 +4,11 @@ import ErrorPage from '@app/Pages/ErrorPage';
 import Index from '@app/Pages/Index';
 import Login from '@app/Pages/Index/Login';
 
+/**
+ * 
+ * @param RouteObject[] panelsRoutes 
+ * @returns RouteObject[]
+ */
 function routes(panelsRoutes?: RouteObject[]): RouteObject[] {
   let routeValues: RouteObject[] = [
     {
@@ -46,6 +51,9 @@ function routes(panelsRoutes?: RouteObject[]): RouteObject[] {
   return routeValues;
 }
 
+/**
+ * Dock block for routes3
+ */
 export { routes };
 
 function router(routes: RouteObject[]) {
