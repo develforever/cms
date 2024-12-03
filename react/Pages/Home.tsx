@@ -12,6 +12,10 @@ export function getRoutes(): RouteObject[] {
   ];
 }
 
+/**
+ * 
+ * @returns React.element
+ */
 function Home() {
   console.debug(`render home page`);
 

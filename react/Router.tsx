@@ -5,7 +5,7 @@ import Index from '@app/Pages/Index';
 import Login from '@app/Pages/Index/Login';
 
 /**
- * 
+ * Desc for docs 3
  * @param RouteObject[] panelsRoutes 
  * @returns RouteObject[]
  */
@@ -52,7 +52,7 @@ function routes(panelsRoutes?: RouteObject[]): RouteObject[] {
 }
 
 /**
- * Dock block for routes3
+ * Dock block for routes7
  */
 export { routes };
 
