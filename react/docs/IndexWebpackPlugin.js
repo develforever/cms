@@ -2,7 +2,8 @@ const { globSync } = require("glob");
 const path = require("path");
 const fs = require('fs');
 const { parse } = require('@babel/parser');
-const { debug } = require("util");
+const babelGenerator = require('@babel/generator').default;
+const t = require('@babel/types');
 const traverse = require('@babel/traverse').default;
 
 const logerName = 'IndexWebpackPlugin';
@@ -52,11 +53,132 @@ class IndexWebpackPlugin {
                             });
                         }
 
+                        const ast = self.createReactComponentAst(docblocks);
+                        const { code } = babelGenerator(ast, { quotes: 'single' });
+
+                        fs.writeFileSync(path.join(__dirname, '..', '/docs/DocblockList.tsx'), code);
+
                         callback();
                     }
 
                 });
         });
+    }
+
+    createReactComponentAst(docblocks) {
+
+        const importReact = t.importDeclaration(
+            [t.importDefaultSpecifier(t.identifier('React'))],
+            t.stringLiteral('react')
+        );
+
+        const styleVariable = t.variableDeclaration('const', [
+            t.variableDeclarator(
+                t.identifier('style'),
+                t.objectExpression([
+                    t.objectProperty(t.identifier('width'), t.stringLiteral('100%')),
+                    t.objectProperty(t.identifier('border'), t.stringLiteral('1px solid black')),
+                ])
+            ),
+        ]);
+
+        const renderTable = t.arrowFunctionExpression(
+            [],
+            t.blockStatement([
+                styleVariable,
+                t.returnStatement(t.jsxElement(
+                    t.jsxOpeningElement(t.jsxIdentifier('div'), []),
+                    t.jsxClosingElement(t.jsxIdentifier('div')),
+                    [
+                        // Tytuł
+                        t.jsxElement(
+                            t.jsxOpeningElement(t.jsxIdentifier('h1'), []),
+                            t.jsxClosingElement(t.jsxIdentifier('h1')),
+                            [t.jsxText('Docblock List')]
+                        ),
+                        // Tabela
+                        t.jsxElement(
+                            t.jsxOpeningElement(t.jsxIdentifier('table'), [
+                                t.jsxAttribute(t.jsxIdentifier('style'), t.jsxExpressionContainer(t.identifier('style')))
+                            ]),
+                            t.jsxClosingElement(t.jsxIdentifier('table')),
+                            [
+                                // Nagłówki tabeli
+                                t.jsxElement(
+                                    t.jsxOpeningElement(t.jsxIdentifier('thead'), []),
+                                    t.jsxClosingElement(t.jsxIdentifier('thead')),
+                                    [
+                                        t.jsxElement(
+                                            t.jsxOpeningElement(t.jsxIdentifier('tr'), []),
+                                            t.jsxClosingElement(t.jsxIdentifier('tr')),
+                                            [
+                                                t.jsxElement(
+                                                    t.jsxOpeningElement(t.jsxIdentifier('th'), []),
+                                                    t.jsxClosingElement(t.jsxIdentifier('th')),
+                                                    [t.jsxText('Name')]
+                                                ),
+                                                t.jsxElement(
+                                                    t.jsxOpeningElement(t.jsxIdentifier('th'), []),
+                                                    t.jsxClosingElement(t.jsxIdentifier('th')),
+                                                    [t.jsxText('Docblock')]
+                                                ),
+                                                t.jsxElement(
+                                                    t.jsxOpeningElement(t.jsxIdentifier('th'), []),
+                                                    t.jsxClosingElement(t.jsxIdentifier('th')),
+                                                    [t.jsxText('File')]
+                                                ),
+                                            ]
+                                        ),
+                                    ]
+                                ),
+                                // Wiersze tabeli
+                                t.jsxElement(
+                                    t.jsxOpeningElement(t.jsxIdentifier('tbody'), []),
+                                    t.jsxClosingElement(t.jsxIdentifier('tbody')),
+                                    docblocks.map(docblock =>
+                                        t.jsxElement(
+                                            t.jsxOpeningElement(t.jsxIdentifier('tr'), []),
+                                            t.jsxClosingElement(t.jsxIdentifier('tr')),
+                                            [
+                                                t.jsxElement(
+                                                    t.jsxOpeningElement(t.jsxIdentifier('td'), []),
+                                                    t.jsxClosingElement(t.jsxIdentifier('td')),
+                                                    [t.jsxText(docblock.name)]
+                                                ),
+                                                t.jsxElement(
+                                                    t.jsxOpeningElement(t.jsxIdentifier('td'), []),
+                                                    t.jsxClosingElement(t.jsxIdentifier('td')),
+                                                    [t.jsxText(docblock.docblock)]
+                                                ),
+                                                t.jsxElement(
+                                                    t.jsxOpeningElement(t.jsxIdentifier('td'), []),
+                                                    t.jsxClosingElement(t.jsxIdentifier('td')),
+                                                    [t.jsxText(docblock.file)]
+                                                ),
+                                            ]
+                                        )
+                                    )
+                                ),
+                            ]
+                        ),
+                    ]
+                )
+                )
+            ])
+        );
+
+
+
+        const component = t.variableDeclaration('const', [
+            t.variableDeclarator(
+                t.identifier('DocblockList: React.FC'),
+                renderTable
+            ),
+        ]);
+
+        const exportComponent = t.exportDefaultDeclaration(t.identifier('DocblockList'));
+
+        return t.program([importReact, component, exportComponent]);
     }
 
     extractDocblocks(content, filePath) {
@@ -67,7 +189,6 @@ class IndexWebpackPlugin {
 
         const self = this;
         const docblocks = [];
-
 
         traverse(ast, {
 

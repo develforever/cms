@@ -4,6 +4,7 @@ import { InitialConfig } from '@app/Types/AppTypes';
 import '@app/css/bootstrap.css';
 import '@app/css/app.css';
 import '@app/css/theme1.css';
+import DocblockList from './docs/DocblockList';
 
 const Root: React.FC<{ initConfig?: InitialConfig }> = ({ initConfig }) => {
   console.log('docs render', initConfig);
@@ -15,6 +16,9 @@ const Root: React.FC<{ initConfig?: InitialConfig }> = ({ initConfig }) => {
       </div>
       <div>
         <input className='form-control' type='search' placeholder='...start typing for search'/>
+      </div>
+      <div>
+        <DocblockList/>
       </div>
     </div>
   );

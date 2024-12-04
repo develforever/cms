@@ -29,3 +29,4 @@ node_modules
 ###< friendsofphp/php-cs-fixer ###
 public/js/*
 !public/js/.gitkeep
+react/docs/DocblockList.tsx
