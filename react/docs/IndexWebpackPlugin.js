@@ -24,7 +24,10 @@ class IndexWebpackPlugin {
                 },
                 (assets, callback) => {
 
-                    let files = globSync(path.join(__dirname, '..', '/**/*.tsx'));
+                    let files = globSync([
+                        path.join(__dirname, '..', '/Router.tsx'),
+                        path.join(__dirname, '..', '/Pages/*.tsx')
+                    ]);
 
                     let docblocks = [];
 
@@ -62,9 +65,12 @@ class IndexWebpackPlugin {
             plugins: ['typescript', 'jsx'],
         });
 
+        const self = this;
         const docblocks = [];
 
+
         traverse(ast, {
+
             ExportNamedDeclaration(path) {
                 const { leadingComments } = path.node;
                 if (leadingComments) {
@@ -88,12 +94,13 @@ class IndexWebpackPlugin {
                         declaration.init &&
                         ['FunctionExpression', 'ArrowFunctionExpression'].includes(declaration.init.type)
                     ) {
-                        const funcName = declaration.id.name;
-                        const leadingComments = path.parent.leadingComments;
+                        const funcName = declaration.id ? declaration.id.name : null;
+                        const leadingComments = path.node.leadingComments;
+                        const typeAnnotation = self.getTypeAnnotation(declaration);
 
                         if (leadingComments) {
                             const docblock = leadingComments.map(comment => comment.value).join('\n');
-                            docblocks.push({ name: funcName, docblock, file: filePath, type: 'var' });
+                            docblocks.push({ name: funcName, docblock, file: filePath, type: `var:${path.node.kind}`, tstype: typeAnnotation });
                         }
                     }
                 });
@@ -101,6 +108,34 @@ class IndexWebpackPlugin {
         });
 
         return docblocks;
+    }
+
+    getTypeAnnotation(declaration) {
+        if (declaration.id.typeAnnotation) {
+            const typeNode = declaration.id.typeAnnotation.typeAnnotation;
+
+            // Obsługa typu: React.FC lub innych nazwanych typów
+            if (typeNode.type === 'TSTypeReference') {
+                return this.extractTSTypeReference(typeNode);
+            }
+        }
+
+        return null;
+    }
+
+    extractTSTypeReference(typeNode) {
+        // Pobierz nazwę typu (np. React.FC)
+        const typeName = typeNode.typeName;
+
+        if (typeName.type === 'TSQualifiedName') {
+            return `${typeName.left.name}.${typeName.right.name}`;
+        }
+
+        if (typeName.type === 'Identifier') {
+            return typeName.name;
+        }
+
+        return null;
     }
 }
 

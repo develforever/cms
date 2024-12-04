@@ -13,10 +13,14 @@ export function getRoutes(): RouteObject[] {
 }
 
 /**
+ * Home page const component 1
  * 
- * @returns React.element
+ * This home page where user are start his work.
+ * 
+ * @app_page
  */
-function Home() {
+
+const Home: React.FC = () => {
   console.debug(`render home page`);
 
   return (
@@ -27,6 +31,13 @@ function Home() {
       <Outlet />
     </>
   );
-}
+};
 
+/**
+ * Home page1
+ * 
+ * This home page where user are start his work.
+ * 
+ * @app_page
+ */
 export default Home;

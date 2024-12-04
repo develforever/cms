@@ -10,7 +10,7 @@
     "build": "webpack --mode production",
     "predev": "bash $HOME/.nvm/nvm.sh use; docker compose up -d; printenv | grep NODE",
     "dev": "NODE_OPTIONS=\"--inspect=localhost:9092 --trace-deprecation\" webpack --watch",
-    "dev:webpack": "webpack",
+    "dev:webpack": "NODE_OPTIONS=\"--inspect=localhost:9092 --trace-deprecation\" webpack",
     "lint": "eslint --flag unstable_ts_config --config eslint.config.ts",
     "lint:fix": "eslint --fix --flag unstable_ts_config --config eslint.config.ts",
     "prettier": "prettier --write --config .prettierrc 'react/**/*.tsx'"
