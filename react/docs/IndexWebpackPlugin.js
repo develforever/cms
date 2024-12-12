@@ -148,7 +148,13 @@ class IndexWebpackPlugin {
                                                 t.jsxElement(
                                                     t.jsxOpeningElement(t.jsxIdentifier('td'), []),
                                                     t.jsxClosingElement(t.jsxIdentifier('td')),
-                                                    [t.jsxText(docblock.docblock)]
+                                                    [
+                                                        t.jsxElement(
+                                                            t.jsxOpeningElement(t.jsxIdentifier('pre'), []),
+                                                            t.jsxClosingElement(t.jsxIdentifier('pre')),
+                                                            [t.jsxText(docblock.docblock)]
+                                                        ),
+                                                    ]
                                                 ),
                                                 t.jsxElement(
                                                     t.jsxOpeningElement(t.jsxIdentifier('td'), []),
@@ -196,7 +202,7 @@ class IndexWebpackPlugin {
                 const { leadingComments } = path.node;
                 if (leadingComments) {
                     const funcName = path.node.specifiers[0].local.loc.identifierName;
-                    const docblock = leadingComments.map(comment => comment.value).join('\n');
+                    const docblock = leadingComments.map(comment => comment.value.trim()).join("");
                     docblocks.push({ name: funcName, docblock, file: filePath, type: 'namedexport' });
                 }
             },
@@ -205,7 +211,7 @@ class IndexWebpackPlugin {
 
                 if (leadingComments && path.node.id) {
                     const funcName = path.node.id.name;
-                    const docblock = leadingComments.map(comment => comment.value).join('\n');
+                    const docblock = leadingComments.map(comment => comment.value.trim()).join("");
                     docblocks.push({ name: funcName, docblock, file: filePath, type: 'function' });
                 }
             },
@@ -220,7 +226,7 @@ class IndexWebpackPlugin {
                         const typeAnnotation = self.getTypeAnnotation(declaration);
 
                         if (leadingComments) {
-                            const docblock = leadingComments.map(comment => comment.value).join('\n');
+                            const docblock = leadingComments.map(comment => comment.value.trim()).join("");
                             docblocks.push({ name: funcName, docblock, file: filePath, type: `var:${path.node.kind}`, tstype: typeAnnotation });
                         }
                     }

@@ -7,7 +7,7 @@ import useDataService from '@app/Services/DataService';
 
 const Center: React.FC<LayoutSlotProps> = ({}) => {
   const location = useLocation();
-  const row = location.state.row;  
+  const row = location.state.row;
 
   return (
     <Card title={location.state.row.data.title}>

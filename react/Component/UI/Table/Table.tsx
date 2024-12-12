@@ -18,7 +18,7 @@ interface TableProps<D> {
   onView?: (row: D) => void;
   onEdit?: (row: D) => void;
   url?: string;
-  customActions?: ReactElement|ReactElement[]
+  customActions?: ReactElement | ReactElement[];
 }
 
 const Table = <
@@ -56,8 +56,8 @@ const Table = <
   );
 
   const data: D[] | undefined = state.result?.data?.data;
-  const total : number =  state.result?.data?.meta?.total as number;
-  const totalPages : number =  state.result?.data?.meta?.total_pages as number;
+  const total: number = state.result?.data?.meta?.total as number;
+  const totalPages: number = state.result?.data?.meta?.total_pages as number;
 
   let lastPage = useRef(1);
 
@@ -136,7 +136,9 @@ const Table = <
   columnNames.unshift('lp');
 
   const tableHeader = columnNames.map((h, i) => {
-    return <th key={i}>{columnLabels && columnLabels[h] ? columnLabels[h] : h}</th>;
+    return (
+      <th key={i}>{columnLabels && columnLabels[h] ? columnLabels[h] : h}</th>
+    );
   });
 
   if (showActions) {
@@ -147,20 +149,19 @@ const Table = <
     );
   }
 
-  function* lpGenerator(end:number = 1){
-    for(let i=1; i<=end; i++){
+  function* lpGenerator(end: number = 1) {
+    for (let i = 1; i <= end; i++) {
       yield i;
     }
   }
 
-  let lp = lpGenerator(data?.length||0);
+  let lp = lpGenerator(data?.length || 0);
 
   const tableRows = data?.map((r, i) => {
     const cells = columnNames.map((c, i) => {
-
       let cellValue = r.data[c];
 
-      if(!cellValue && 'lp' === c){
+      if (!cellValue && 'lp' === c) {
         cellValue = lp.next().value;
       }
 
@@ -189,11 +190,13 @@ const Table = <
         <thead>
           <tr>{tableHeader}</tr>
         </thead>
-        {customActions && <thead>
-          <tr>
-            <th colSpan={tableHeader.length}>{customActions}</th>
-          </tr>
-        </thead>}
+        {customActions && (
+          <thead>
+            <tr>
+              <th colSpan={tableHeader.length}>{customActions}</th>
+            </tr>
+          </thead>
+        )}
         <tbody>
           {!isLoading && tableRows}
           {isLoading && (
@@ -221,7 +224,9 @@ const Table = <
               >
                 prev
               </a>
-              <span className="p-1">page {page} of {totalPages} | total items: {total}</span>
+              <span className="p-1">
+                page {page} of {totalPages} | total items: {total}
+              </span>
               <a
                 className="btn btn-primary"
                 href="#"

@@ -6,7 +6,8 @@ import Login from '@app/Pages/Index/Login';
 
 /**
  * Desc for docs 3
- * @param RouteObject[] panelsRoutes 
+ *
+ * @param RouteObject[] panelsRoutes
  * @returns RouteObject[]
  */
 function routes(panelsRoutes?: RouteObject[]): RouteObject[] {

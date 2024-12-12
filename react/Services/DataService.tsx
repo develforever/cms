@@ -14,19 +14,21 @@ export enum Status {
 }
 
 export interface ResponseDataInterface {
-  data: any;
-  meta?: {[key:string]:string|number}
+  data: { [key: string]: string | number | null | string[] | number[] };
+  meta?: { [key: string]: string | number };
 }
 
-type Response<T extends ResponseDataInterface> = {
-  data: T;
-  status: number;
-  statusText: string;
-  headers: { [key: string]: string };
-  config: AxiosRequestConfig;
-  request: any;
-  response: any;
-};
+type Response<T extends ResponseDataInterface> =
+  | {
+      data: T;
+      status?: number;
+      statusText?: string;
+      headers?: { [key: string]: string };
+      config?: AxiosRequestConfig;
+      request?: axios.AxiosRequestConfig;
+      response?: axios.AxiosResponse;
+    }
+  | axios.AxiosResponse<T>;
 
 export type InitialState<Result extends ResponseDataInterface> = {
   status?: Status;
@@ -34,17 +36,26 @@ export type InitialState<Result extends ResponseDataInterface> = {
   result?: Response<Result> | null;
 };
 
-type Action = {
+type Action<Result extends ResponseDataInterface> = {
   url?: string;
-  data?: any;
+  data?:
+    | {}
+    | { [key: string]: string | number | null | string[] | number[] }
+    | string
+    | null;
   method?: string;
   type?: ActionType;
-  result?: any;
+  result?: Response<Result> | null;
+  error?: {
+    message: string;
+    stack?: string;
+    code?: number;
+  };
   baseURL?: string;
   timeout?: number;
   headers?: object;
   token?: string;
-  params?: any;
+  params?: { [key: string]: string | number | null };
 };
 
 let apiClient: AxiosInstance | null = null;
@@ -72,7 +83,10 @@ export function useService() {
   });
 }
 
-async function useFetchData(url: string, action: Action) {
+async function useFetchData<T extends ResponseDataInterface>(
+  url: string,
+  action: Action<T>
+) {
   if (!apiClient) {
     throw new Error(`Initialize service first`);
   }
@@ -90,7 +104,7 @@ async function useFetchData(url: string, action: Action) {
     };
   }
 
-  const result = await apiClient.request(tmp);
+  const result = await apiClient.request<T>(tmp);
 
   console.debug(`data serive:request: ${url}`);
 
@@ -99,7 +113,7 @@ async function useFetchData(url: string, action: Action) {
 
 function reducer<T extends ResponseDataInterface>(
   state: InitialState<T>,
-  action: Action
+  action: Action<T>
 ): InitialState<T> {
   let type: ActionType = action.type || ActionType.request;
 
@@ -123,20 +137,23 @@ function reducer<T extends ResponseDataInterface>(
   }
 }
 
-function dispatchMiddleware(url: string, dispatch: React.Dispatch<Action>) {
+function dispatchMiddleware<T extends ResponseDataInterface>(
+  url: string,
+  dispatch: React.Dispatch<Action<T>>
+) {
   console.debug('dispatch middleware');
 
-  return async (action: Action) => {
+  return async (action: Action<T>) => {
     let type: ActionType = action.type || ActionType.request;
 
     switch (type) {
       case ActionType.request:
         try {
-          const result = await useFetchData(url, action);
+          const result = await useFetchData<T>(url, action);
           dispatch({ ...action, type: ActionType.success, result });
         } catch (e) {
           console.error('data servce error', e);
-          dispatch({ ...action, type: ActionType.error, result: e });
+          dispatch({ ...action, type: ActionType.error, error: e as Error });
         }
         break;
 
@@ -149,14 +166,14 @@ function dispatchMiddleware(url: string, dispatch: React.Dispatch<Action>) {
 function useDataService<T extends ResponseDataInterface>(
   url: string,
   ...middlewares: ((
-    action: React.Dispatch<Action>
-  ) => (action: Action) => Promise<void>)[]
-): [result: InitialState<T>, dipath: React.Dispatch<Action>] {
+    action: React.Dispatch<Action<T>>
+  ) => (action: Action<T>) => Promise<void>)[]
+): [result: InitialState<T>, dipath: React.Dispatch<Action<T>>] {
   let params: InitialState<T> = {
     url,
   };
   const [result, dispatch] = useReducer<
-    (state: InitialState<T>, action: Action) => InitialState<T>
+    (state: InitialState<T>, action: Action<T>) => InitialState<T>
   >(reducer, params);
 
   let md = dispatch;

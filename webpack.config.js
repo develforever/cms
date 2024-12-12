@@ -24,7 +24,8 @@ module.exports = {
     watchOptions: {
         ignored: [
             '**/node_modules',
-            '**/DocblockList.tsx'
+            '**/DocblockList.tsx',
+            '**/docblocks.json'
         ],
         aggregateTimeout: 300,
         poll: 1000,

@@ -12,7 +12,6 @@ import '@app/css/app.css';
 import '@app/css/theme1.css';
 import { InitialConfig } from '@app/Types/AppTypes';
 
-
 const Root: React.FC<{ initConfig?: InitialConfig }> = ({ initConfig }) => {
   console.log('root render');
 

@@ -35,11 +35,18 @@ const Center: React.FC<LayoutSlotProps> = ({}) => {
             id: 'Id',
             title: 'Title',
           }}
-          customActions={<div>
-            <button className='btn btn-primary' onClick={()=>{
-              navigateCreate();
-            }}>Create</button>
-          </div>}
+          customActions={
+            <div>
+              <button
+                className="btn btn-primary"
+                onClick={() => {
+                  navigateCreate();
+                }}
+              >
+                Create
+              </button>
+            </div>
+          }
         ></Table>
       )}
     </div>

@@ -3,12 +3,12 @@ import useDataService, {
   ResponseDataInterface,
   Status,
 } from '@app/Services/DataService';
-import React, { useEffect } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { Form as BaseForm, useActionData } from 'react-router-dom';
 
 interface FormProps {
   url: string;
-  method?:string,
+  method?: string;
   redirectUrl?: string;
   okLabel?: string;
   children?: React.ReactNode | React.ReactNode[];
@@ -45,10 +45,12 @@ const Form = <R extends ResponseDataInterface>({
 
   return (
     <BaseForm method="post" className="form">
-      {children}
-      <button className="btn btn-primary" type="submit">
-        {okLabel}
-      </button>
+      <Suspense fallback={<p>Ładowanie...</p>}>
+        {children}
+        <button className="btn btn-primary" type="submit">
+          {okLabel}
+        </button>
+      </Suspense>
     </BaseForm>
   );
 };

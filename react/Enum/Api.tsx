@@ -54,17 +54,17 @@ export interface ApiResponsePageList extends ResponseDataInterface {
     total: number;
     total_pages: number;
   };
-};
+}
 
 export interface ApiResponsePage extends ResponseDataInterface {
   data: {
     id: number;
     title: string;
     content: string;
-  } ;
+  };
   links: { [key: string]: string };
   meta: { [key: string]: string };
-};
+}
 
 export interface ApiResponseUser extends ResponseDataInterface {
   data: ApiUserResource;
@@ -75,5 +75,3 @@ export interface ApiResponseUser extends ResponseDataInterface {
     [key: string]: string;
   };
 }
-
-

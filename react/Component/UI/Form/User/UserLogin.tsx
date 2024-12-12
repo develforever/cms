@@ -44,6 +44,7 @@ const UserLogin: React.FC = ({}) => {
           className="form-control"
           type="text"
           autoComplete="username"
+          required
         />
       </div>
       <div>
@@ -52,6 +53,7 @@ const UserLogin: React.FC = ({}) => {
           name="password"
           className="form-control"
           type="password"
+          required
           autoComplete="current-password"
         ></input>
       </div>

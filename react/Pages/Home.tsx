@@ -14,9 +14,9 @@ export function getRoutes(): RouteObject[] {
 
 /**
  * Home page const component 1
- * 
+ *
  * This home page where user are start his work.
- * 
+ *
  * @app_page
  */
 
@@ -35,9 +35,9 @@ const Home: React.FC = () => {
 
 /**
  * Home page1
- * 
+ *
  * This home page where user are start his work.
- * 
+ *
  * @app_page
  */
 export default Home;

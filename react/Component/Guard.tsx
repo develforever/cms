@@ -14,7 +14,6 @@ const Guard: React.FC<any> = ({ children }) => {
   let subRouter = (state: any) => {
     let path = state.location.pathname;
     let token = get('token');
-    console.log('token', token);
     if (
       (!token || (!context.isAuthenticated() && !context.token)) &&
       [RouteNames.HOME, RouteNames.LOGIN].indexOf(path) === -1
