@@ -6,11 +6,12 @@ use App\DTO\Api\PageListDTO;
 use App\DTO\Api\PagePatchDTO;
 use App\DTO\Api\PageStoreDTO;
 use App\Entity\Page;
+use App\Document\Page as MPage;
 use App\Repository\PageRepository;
+use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
@@ -22,6 +23,7 @@ class PageController extends AbstractController
         private PageRepository $pageRepository,
         private EntityManagerInterface $manager,
         private SerializerInterface $serializer,
+        private DocumentManager $dm,
     ) {
     }
 
@@ -29,6 +31,9 @@ class PageController extends AbstractController
     public function index(
         #[MapQueryString] ?PageListDTO $params = new PageListDTO(),
     ): JsonResponse {
+
+        $dmpages = $this->dm->getRepository(MPage::class)->findAll();
+
         $pagination = $this->pageRepository->findPaginated($params->page, $params->limit);
 
         $result = [

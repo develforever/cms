@@ -26,3 +26,15 @@ services:
     networks:
       - app
 ###< symfony/mailer ###
+
+###> doctrine/mongodb-odm-bundle ###
+  mongodb:
+    ports:
+      - "27017:27017"
+    env_file:
+      - .env.local
+    environment:
+      - MONGODB_INITDB_DATABASE=app
+      - MONGODB_INITDB_ROOT_USERNAME=app
+      - MONGODB_INITDB_ROOT_PASSWORD=!ChangeMe!
+###< doctrine/mongodb-odm-bundle ###
