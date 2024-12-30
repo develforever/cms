@@ -13,9 +13,14 @@ export enum Status {
   error = 'error',
 }
 
+export type BaseData = {
+  [key: string]: string | number | null | string[] | number[] | any;
+};
+
 export interface ResponseDataInterface {
-  data: { [key: string]: string | number | null | string[] | number[] };
+  data: BaseData | BaseData[];
   meta?: { [key: string]: string | number };
+  links?: { [key: string]: string };
 }
 
 type Response<T extends ResponseDataInterface> =

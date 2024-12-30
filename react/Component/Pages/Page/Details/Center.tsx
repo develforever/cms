@@ -1,9 +1,7 @@
 import { LayoutSlotProps } from '@app/Layout';
-import React, { useEffect } from 'react';
+import React from 'react';
 import Card from '@app/Component/UI/Card';
 import { generatePath, Link, useLocation } from 'react-router-dom';
-import { ApiEndpointNames, ApiResponsePage } from '@app/Enum/Api';
-import useDataService from '@app/Services/DataService';
 
 const Center: React.FC<LayoutSlotProps> = ({}) => {
   const location = useLocation();

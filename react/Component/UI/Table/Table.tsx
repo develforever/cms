@@ -1,4 +1,5 @@
 import useDataService, {
+  BaseData,
   ResponseDataInterface,
   Status,
 } from '@app/Services/DataService';
@@ -55,7 +56,10 @@ const Table = <
     [location.pathname, navigate, queryParams]
   );
 
-  const data: D[] | undefined = state.result?.data?.data;
+  const data: D[] =
+    state.result?.data?.data && state.result?.data?.data.length > 0
+      ? (state.result?.data?.data as D[])
+      : [];
   const total: number = state.result?.data?.meta?.total as number;
   const totalPages: number = state.result?.data?.meta?.total_pages as number;
 
@@ -157,8 +161,9 @@ const Table = <
 
   let lp = lpGenerator(data?.length || 0);
 
-  const tableRows = data?.map((r, i) => {
+  const tableRows = data?.map((r: D, i) => {
     const cells = columnNames.map((c, i) => {
+      // @ts-ignore
       let cellValue = r.data[c];
 
       if (!cellValue && 'lp' === c) {

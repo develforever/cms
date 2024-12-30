@@ -1,19 +1,17 @@
 <?php
 
-namespace App\Controller\Api;
+namespace App\Controller\Api\Front;
 
 use App\DTO\Api\PageListDTO;
-use App\DTO\Api\PagePatchDTO;
-use App\DTO\Api\PageStoreDTO;
 use App\Entity\Page;
 use App\Document\Page as MPage;
+use App\Enum\Route\Api\Front;
 use App\Repository\PageRepository;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
-use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -27,7 +25,7 @@ class PageController extends AbstractController
     ) {
     }
 
-    #[Route('/api/page/list', name: 'app_api_page_list', methods: 'GET')]
+    #[Route('/api/v1/page/list', name: Front::LIST, methods: 'GET')]
     public function index(
         #[MapQueryString] ?PageListDTO $params = new PageListDTO(),
     ): JsonResponse {
@@ -51,38 +49,7 @@ class PageController extends AbstractController
         ], true);
     }
 
-    #[Route('/api/page/store', name: 'app_api_page_store', methods: 'POST')]
-    public function store(
-        #[MapRequestPayload] PageStoreDTO $params,
-    ): JsonResponse {
-        $page = new Page();
-        $page->setTitle($params->title);
-        $page->setContent($params->content);
-
-        $this->manager->persist($page);
-        $this->manager->flush();
-
-        return new JsonResponse($this->serializer->serialize($page, 'json', ['groups' => 'user_read']), 200, [
-            'groups' => ['user_read'],
-        ], true);
-    }
-
-    #[Route('/api/page/update/{id}', name: 'app_api_page_update', methods: 'PATCH')]
-    public function update(
-        #[MapRequestPayload] PagePatchDTO $params,
-        int $id,
-    ): JsonResponse {
-        $page = $this->pageRepository->find($id);
-        $page->setTitle($params->title);
-        $page->setContent($params->content);
-
-        $this->manager->persist($page);
-        $this->manager->flush();
-
-        return new JsonResponse($this->serializer->serialize($page, 'json', ['groups' => 'user_read_full']), 200, [], true);
-    }
-
-    #[Route('/api/page/show/{id}', name: 'app_api_page_show', methods: 'GET')]
+    #[Route('/api/v1/page/show/{id}', name: Front::SHOW, methods: 'GET')]
     public function show(
         Page $page,
     ): JsonResponse {

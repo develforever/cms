@@ -2,9 +2,9 @@ import { LayoutSlotProps } from '@app/Layout';
 import React, { useContext } from 'react';
 import Card from '../../../UI/Card';
 import { RouteNames } from '@app/Enum/Route';
-import { ApiEndpointNames } from '@app/Enum/Api';
 import Form from '@app/Component/UI/Form/Form';
 import AppContext from '@app/AppContext';
+import ApiEndpointNames from '@app/Enum/ApiEndpointNames';
 
 const Center: React.FC<LayoutSlotProps> = ({}) => {
   const context = useContext(AppContext);

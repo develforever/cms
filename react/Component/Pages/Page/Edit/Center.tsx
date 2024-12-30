@@ -3,9 +3,10 @@ import React, { useEffect } from 'react';
 import Card from '@app/Component/UI/Card';
 import { useLocation } from 'react-router-dom';
 import useDataService from '@app/Services/DataService';
-import { ApiEndpointNames, ApiResponsePage } from '@app/Enum/Api';
+import { ApiResponsePage } from '@app/Enum/Api';
 import Form from '@app/Component/UI/Form/Form';
 import { RouteNames } from '@app/Enum/Route';
+import ApiEndpointNames from '@app/Enum/ApiEndpointNames';
 
 const Center: React.FC<LayoutSlotProps> = ({}) => {
   const location = useLocation();
@@ -22,6 +23,8 @@ const Center: React.FC<LayoutSlotProps> = ({}) => {
   let page = state.result?.data.data;
   let links = state.result?.data.links;
   let url = links ? links[ApiEndpointNames.PAGE_UPDATE] : null;
+
+  console.debug('xxx', row, page);
 
   return (
     <div className="ms-1 me-1">

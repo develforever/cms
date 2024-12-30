@@ -6,8 +6,8 @@ function Edit() {
   return (
     <>
       <Layout>
-        <Center data-slot={SlotNames.Center}>page view</Center>
-        <div data-slot={SlotNames.Right}>ddd</div>
+        <Center data-slot={SlotNames.Center}>page edit</Center>
+        <div data-slot={SlotNames.Right}>edit right </div>
       </Layout>
     </>
   );

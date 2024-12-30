@@ -3,6 +3,7 @@
 namespace App\Serializer;
 
 use App\Entity\Page;
+use App\Enum\Route\Api\Back;
 use stdClass;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -32,8 +33,8 @@ class WrappedPageNormalizer implements NormalizerInterface
         return [
             'data' => $normalizedData,
             'links' => [
-                'app_api_page_update' => $this->urlGenerator->generate('app_api_page_update', ['id' => $object->getId()]),
-                'app_api_page_show' => $this->urlGenerator->generate('app_api_page_show', ['id' => $object->getId()]),
+                'page_update' => $this->urlGenerator->generate(Back::UPDATE, ['id' => $object->getId()]),
+                'page_show' => $this->urlGenerator->generate(Back::SHOW, ['id' => $object->getId()]),
             ],
             'meta' => new stdClass,
         ];

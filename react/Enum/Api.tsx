@@ -6,28 +6,10 @@ export enum ApiEndpoint {
   USER_LOGIN = '/api/login',
 }
 
-export enum ApiEndpointNames {
-  PAGE_LIST = 'app_api_page_list',
-  PAGE_STORE = 'app_api_page_store',
-  PAGE_UPDATE = 'app_api_page_update',
-  PAGE_SHOW = 'app_api_page_show',
-}
-
-export interface ApiResource extends ResponseDataInterface {
-  data: { [key: string]: string | number };
-  links?: { [key: string]: string };
-  meta?: { [key: string]: string };
-}
+export interface ApiResource extends ResponseDataInterface {}
 
 export interface ApiResponseToken {
   token: string;
-}
-
-export interface ApiPageListResource extends ApiResource {
-  data: {
-    id: number;
-    title: string;
-  };
 }
 
 export interface ApiPageResource extends ApiResource {
@@ -36,16 +18,23 @@ export interface ApiPageResource extends ApiResource {
     title: string;
     content: string;
   };
-  links: { [key: string]: string };
-  meta: { [key: string]: string };
 }
 
 export interface ApiUserResource extends ApiResource {
+  [key: string]: any;
   email: string;
   role: string;
 }
 
-export interface ApiResponsePageList extends ResponseDataInterface {
+export interface ApiPageListResource extends ApiResource {
+  [key: string]: any;
+  data: {
+    id: number;
+    title: string;
+  };
+}
+
+export interface ApiResponsePageList extends ApiResource {
   data: ApiPageListResource[];
   links: { [key: string]: string };
   meta: {
@@ -56,22 +45,18 @@ export interface ApiResponsePageList extends ResponseDataInterface {
   };
 }
 
-export interface ApiResponsePage extends ResponseDataInterface {
+export interface ApiResponsePage extends ApiResource {
   data: {
     id: number;
     title: string;
     content: string;
   };
   links: { [key: string]: string };
-  meta: { [key: string]: string };
 }
 
-export interface ApiResponseUser extends ResponseDataInterface {
+export interface ApiResponseUser extends ApiResource {
   data: ApiUserResource;
   links: {
-    [key: string]: string;
-  };
-  meta: {
     [key: string]: string;
   };
 }

@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Api\Back;
 
+use App\Enum\Route\Api\Back;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -59,9 +60,10 @@ class ApiController extends AbstractController
         $jsonContent = $serializer->serialize([
             'data' => $this->getUser(),
             'links' => [
-                'app_api_page_list' => $this->generateUrl('app_api_page_list'),
-                'app_api_page_store' => $this->generateUrl('app_api_page_store'),
-                'app_api_page_update' => $this->generateUrl('app_api_page_update', ['id'=>'{id}']),
+                'page_list' => $this->generateUrl(Back::LIST),
+                'page_store' => $this->generateUrl(Back::STORE),
+                'page_update' => $this->generateUrl(Back::UPDATE, ['id'=>'{id}']),
+                'page_show' => $this->generateUrl(Back::SHOW, ['id'=>'{id}']),
             ],
             'meta' => new \stdClass(),
         ], 'json', [
