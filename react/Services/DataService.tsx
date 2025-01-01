@@ -14,7 +14,7 @@ export enum Status {
 }
 
 export type BaseData = {
-  [key: string]: string | number | null | string[] | number[] | any;
+  [key: string]: string | number | null | string[] | number[];
 };
 
 export interface ResponseDataInterface {
@@ -44,7 +44,6 @@ export type InitialState<Result extends ResponseDataInterface> = {
 type Action<Result extends ResponseDataInterface> = {
   url?: string;
   data?:
-    | {}
     | { [key: string]: string | number | null | string[] | number[] }
     | string
     | null;

@@ -6,7 +6,7 @@ export enum ApiEndpoint {
   USER_LOGIN = '/api/login',
 }
 
-export interface ApiResource extends ResponseDataInterface {}
+export type ApiResource = ResponseDataInterface;
 
 export interface ApiResponseToken {
   token: string;

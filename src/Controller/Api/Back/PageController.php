@@ -28,7 +28,7 @@ class PageController extends AbstractController
     ) {
     }
 
-    #[Route('/api/page/list', name: Back::LIST, methods: 'GET')]
+    #[Route('/api/page/list', name: Back::PAGE_LIST, methods: 'GET')]
     public function index(
         #[MapQueryString] ?PageListDTO $params = new PageListDTO(),
     ): JsonResponse {
@@ -50,7 +50,7 @@ class PageController extends AbstractController
         ], true);
     }
 
-    #[Route('/api/page/store', name: Back::STORE, methods: 'POST')]
+    #[Route('/api/page/store', name: Back::PAGE_STORE, methods: 'POST')]
     public function store(
         #[MapRequestPayload] PageStoreDTO $params,
     ): JsonResponse {
@@ -66,7 +66,7 @@ class PageController extends AbstractController
         ], true);
     }
 
-    #[Route('/api/page/update/{id}', name: Back::UPDATE, methods: 'PATCH')]
+    #[Route('/api/page/update/{id}', name: Back::PAGE_UPDATE, methods: 'PATCH')]
     public function update(
         #[MapRequestPayload] PagePatchDTO $params,
         int $id,
@@ -81,7 +81,7 @@ class PageController extends AbstractController
         return new JsonResponse($this->serializer->serialize($page, 'json', ['groups' => 'user_read_full']), 200, [], true);
     }
 
-    #[Route('/api/page/show/{id}', name: Back::SHOW, methods: 'GET')]
+    #[Route('/api/page/show/{id}', name: Back::PAGE_SHOW, methods: 'GET')]
     public function show(
         Page $page,
     ): JsonResponse {

@@ -1,4 +1,4 @@
-import React, { useCallback, useContext } from 'react';
+import React, { ReactElement, useCallback, useContext } from 'react';
 import AppContext from '@app/AppContext';
 import DropDown from './DropDown';
 import { Link } from 'react-router-dom';
@@ -6,7 +6,7 @@ import useRedirect from '@app/hooks/useRedirect';
 import { RouteNames } from '@app/Enum/Route';
 import useLocalStorage from '@app/Services/LocalStorage';
 
-function Comp(props: { children?: any }) {
+function Comp(props: { children?: ReactElement }) {
   const { user } = useContext(AppContext);
   const redirect = useRedirect(RouteNames.LOGOUT);
   const [get, set, del] = useLocalStorage();
@@ -47,7 +47,7 @@ function Comp(props: { children?: any }) {
   }
 }
 
-const UserDropDown: React.FC<{ children?: any }> = ({ children }) => {
+const UserDropDown: React.FC<{ children?: ReactElement }> = ({ children }) => {
   return <Comp>{children}</Comp>;
 };
 

@@ -11,7 +11,7 @@ export enum SlotNames {
 
 export type LayoutSlotProps = {
   'data-slot': SlotNames;
-  children?: any;
+  children?: React.ReactElement;
 };
 
 interface CompProps {
@@ -38,7 +38,10 @@ function Center(props: CompProps) {
   return <div className={props.className}>{props.children}</div>;
 }
 
-const Layout: React.FC<{ children: any } | any> = ({ children, ...props }) => {
+const Layout: React.FC<{ children: React.ReactElement }> = ({
+  children,
+  ...props
+}) => {
   let top = Config.getDefaultTopComp<React.ReactElement>();
   let bottom = Config.getDefaultBottomComp<React.ReactElement>();
   let left = Config.getDefaultLeftComp<React.ReactElement>();

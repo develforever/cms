@@ -1,9 +1,6 @@
 import AppContext from '@app/AppContext';
 import Table from '@app/Component/UI/Table/Table';
-import {
-  ApiPageListResource,
-  ApiResponsePageList,
-} from '@app/Enum/Api';
+import { ApiPageListResource, ApiResponsePageList } from '@app/Enum/Api';
 import ApiEndpointNames from '@app/Enum/ApiEndpointNames';
 import { RouteNames } from '@app/Enum/Route';
 import useNavigate from '@app/hooks/useNavigate';

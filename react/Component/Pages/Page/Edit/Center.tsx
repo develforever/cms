@@ -24,8 +24,6 @@ const Center: React.FC<LayoutSlotProps> = ({}) => {
   let links = state.result?.data.links;
   let url = links ? links[ApiEndpointNames.PAGE_UPDATE] : null;
 
-  console.debug('xxx', row, page);
-
   return (
     <div className="ms-1 me-1">
       {page && (
